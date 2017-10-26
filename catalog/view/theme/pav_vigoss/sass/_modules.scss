@@ -1,0 +1,165 @@
+/* slideshow */
+.tp-bullets{
+	background:$body-bg;
+	&:before {
+	    border-color:transparent transparent $body-bg;
+	    border-style: solid;
+	    border-width: 36px;
+	    content: "";
+	    position: absolute;
+	    right: -36px;
+	    top: -36px;
+	}
+
+}
+/* fillter */
+.fillter{
+	a{
+		font-weight: 900;
+		text-transform: uppercase;
+		padding-bottom: 0;
+		color: $gray-light;
+		letter-spacing: 1px;
+	}
+	label{
+		@include rtl-margin-left(20px);
+		font-weight: 100;
+	}
+	.list-group-item{
+		border-bottom:1px solid $border-color;
+		margin-bottom: 20px;
+	}
+}
+/* category */
+.category{
+    .list-group{
+        margin-bottom: 0;
+    }
+    ul{
+    	&.level1{
+    		@include rtl-padding-left(0);
+    	}
+    	> li{
+	    	@include rtl-padding-left(0);
+	    	display: block;
+	    	padding-bottom:8px;
+	    	padding-top:8px;
+	      > a{
+	            font-weight: 900;
+	            color: $text-color;
+	            letter-spacing: 1px;
+	        }
+	    }
+	    ul{
+	    	@include rtl-padding-left(20px);
+	    	> li{
+	    		position:relative;
+	    		padding:0;
+	    		a{
+	    			color: $text-color;
+	    			font-weight: 400;
+	    			letter-spacing: 0;
+	    			text-transform: capitalize;
+	    			&:hover,&:active,&:focus{
+	    				color: $black;
+	    				font-weight: 900;
+	    			}
+	    		}
+	    	}
+	    }
+    }
+   
+}
+.refine-search{
+	ul{
+		margin-bottom: 0;
+		li{
+			padding:0 15px;
+			position:relative;
+			white-space: nowrap;
+			&:before{
+				content: ".";
+                color: $theme-color;
+                position:absolute;
+                @include rtl-left(0);
+                top: -8px;
+                font-size: 30px;
+			}
+		}
+	}
+}
+/* slidelayer */
+.layerslider-wrapper{
+    overflow: hidden;
+    &:hover{
+        .tp-rightarrow {
+            right: 20px !important;
+        }       
+        .tp-leftarrow{
+            left: 20px !important;
+        }
+    }
+}
+.tparrows {
+    position:absolute;
+    top:50% !important;
+    z-index:9999;
+    cursor:pointer;
+    display: block;
+    @include size(45px,45px);
+    @include transition(all 0.3s ease-in-out 0s);
+    font-size: 0;
+    &:before {
+        color: #2f2f2f;
+        content: "\f105";
+        display: inline-block;
+        font-size: 22px;
+        font-family: FontAwesome;
+        position: absolute;
+        right: 0;
+        text-align: center;
+        top: 0;
+        @include size(36px,36px);
+        z-index: 12;
+        background-color: $white;
+        line-height: 35px;
+    }
+    &.tp-leftarrow {
+        &:before {
+            content: "\f104";
+        }
+    }
+    &:hover {
+        &:before {
+            background-color: #2f2f2f;
+            color: $white;
+        }
+    }
+}
+.tp-leftarrow {
+    left:-50px !important;
+}
+.tp-rightarrow {
+    right:-50px !important;
+}
+/* custom */
+.custom-v1{
+	padding:30px;
+	.custom-heading{
+		color: $theme-color;
+		font-size: 22px;
+		text-transform: capitalize;
+	}
+	.description{
+		color: $light-gray;
+		line-height: 20px;
+	}
+}
+/* banner home4 */
+.style1{
+	text-align:center;
+	padding:80px 0 50px;
+	img{
+		display: inline-block;
+	}
+}

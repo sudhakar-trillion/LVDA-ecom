@@ -1,0 +1,159 @@
+# 1.To use URL Alias you need to be running apache with mod_rewrite enabled.
+
+# 2. In your opencart directory rename htaccess.txt to .htaccess.
+
+# For any support issues please visit: http://www.opencart.com
+
+Options +FollowSymlinks
+
+# Prevent Directoy listing
+Options -Indexes
+
+# Prevent Direct Access to files
+<FilesMatch "(?i)((\.tpl|\.ini|\.log|(?<!robots)\.txt))">
+ Require all denied
+## For apache 2.2 and older, replace "Require all denied" with these two lines :
+# Order deny,allow
+# Deny from all
+</FilesMatch>
+
+# SEO URL Settings
+RewriteEngine On
+# If your opencart installation does not run on the main web folder make sure you folder it does run in ie. / becomes /shop/
+
+#RewriteBase /lvda-ver-II
+
+RewriteBase /pav-vigoss
+
+RewriteRule ^sitemap.xml$ index.php?route=extension/feed/google_sitemap [L]
+RewriteRule ^googlebase.xml$ index.php?route=extension/feed/google_base [L]
+RewriteRule ^system/download/(.*) index.php?route=error/not_found [L]
+
+
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+
+RewriteRule ^social-login-register index.php?route=account/trisociallogin [L,QSA]
+
+
+RewriteRule ^contactus index.php?route=information/contact [L,QSA]
+
+RewriteRule ^forgotten-password index.php?route=account/forgotten [L,QSA]
+
+RewriteRule ^register index.php?route=account/register [L,QSA]
+RewriteRule ^register-success index.php?route=account/success [L,QSA]
+
+
+
+RewriteRule ^my-account index.php?route=account/account [L,QSA]
+RewriteRule ^edit-personal-info index.php?route=account/edit [L,QSA]
+
+RewriteRule ^change-password index.php?route=account/password [L,QSA]
+RewriteRule ^my-address index.php?route=account/address [L,QSA]
+
+RewriteRule ^my-wishlist index.php?route=account/wishlist [L,QSA]
+
+RewriteRule ^edit-address/[0-9] index.php?route=account/address/edit/$1 [L,QSA]
+RewriteRule ^delete-address/[0-9] index.php?route=account/address/delete/$1 [L,QSA]
+
+RewriteRule ^remove-wishlist-item/[0-9] index.php?route=account/wishlist [L,QSA]
+
+RewriteRule ^my-orders/	index.php?route=account/order [L,QSA]
+
+RewriteRule ^my-orders/[0-9]  index.php?route=account/order [L,QSA]
+
+RewriteRule ^order-info/[0-9] index.php?route=account/order/info [L,QSA]
+
+RewriteRule ^return-product/ index.php?route=account/return/add [L,QSA]
+
+RewriteRule ^product-order-success index.php?route=account/return/success [L,QSA]
+
+RewriteRule ^return-products-list index.php?route=account/return [L,QSA]
+
+RewriteRule ^return-product-info index.php?route=account/return/info/&return_id=$1 [L,QSA]
+
+RewriteRule ^my-transactions index.php?route=account/transaction [L,QSA]
+RewriteRule ^recurring-payments index.php?route=account/recurring [L,QSA]
+RewriteRule ^product-search/[a-z] index.php?route=product/search&search=$1 [L,QSA]
+
+RewriteRule ^compared-products index.php?route=product/compare [L,QSA]
+
+
+
+RewriteRule ^login index.php?route=account/login [L,QSA]
+
+RewriteRule ^logout index.php?route=account/logout [L,QSA]
+RewriteRule ^account/edit index.php?route=account/edit [L,QSA]
+
+RewriteRule ^my-cart index.php?route=checkout/cart [L,QSA]
+RewriteRule ^checkout index.php?route=checkout/checkout [L,QSA]
+
+
+RewriteRule ^edit-password index.php?route=account/password [L,QSA]
+RewriteRule ^my-address index.php?route=account/address [L,QSA]
+
+RewriteRule ^add-new-address index.php?route=account/address/add [L,QSA]
+RewriteRule ^my-orders index.php?route=account/order [L,QSA]
+
+RewriteRule ^sitemap index.php?route=information/sitemap [L,QSA]
+
+RewriteRule ^activate-now/[0-9] index.php?route=account/account/activatecustomer [L,QSA]
+
+RewriteRule ^order-placed index.php?route=checkout/success [L,QSA]
+
+RewriteRule ^social-login index.php?route=extension/module/oneall/register [L,QSA]
+
+
+
+
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !.*\.(ico|gif|jpg|jpeg|png|js|css)
+RewriteRule ^([^?]*) index.php?_route_=$1 [L,QSA]
+
+
+### Additional Settings that may need to be enabled for some servers
+### Uncomment the commands by removing the # sign in front of it.
+### If you get an "Internal Server Error 500" after enabling any of the following settings, restore the # as this means your host doesn't allow that.
+
+# 1. If your cart only allows you to add one item at a time, it is possible register_globals is on. This may work to disable it:
+# php_flag register_globals off
+
+# 2. If your cart has magic quotes enabled, This may work to disable it:
+# php_flag magic_quotes_gpc Off
+
+# 3. Set max upload file size. Most hosts will limit this and not allow it to be overridden but you can try
+# php_value upload_max_filesize 999M
+
+# 4. set max post size. uncomment this line if you have a lot of product options or are getting errors where forms are not saving all fields
+# php_value post_max_size 999M
+
+# 5. set max time script can take. uncomment this line if you have a lot of product options or are getting errors where forms are not saving all fields
+# php_value max_execution_time 200
+
+# 6. set max time for input to be recieved. Uncomment this line if you have a lot of product options or are getting errors where forms are not saving all fields
+# php_value max_input_time 200
+
+# 7. disable open_basedir limitations
+# php_admin_value open_basedir none
+
+
+# compress text, html, javascript, css, xml:
+
+#AddOutputFilterByType DEFLATE text/plain
+#AddOutputFilterByType DEFLATE text/html
+#AddOutputFilterByType DEFLATE text/xml
+#AddOutputFilterByType DEFLATE text/css
+#AddOutputFilterByType DEFLATE application/xml
+#AddOutputFilterByType DEFLATE application/xhtml+xml
+#AddOutputFilterByType DEFLATE application/rss+xml
+#AddOutputFilterByType DEFLATE application/javascript
+#AddOutputFilterByType DEFLATE application/x-javascript
+
+# Or, compress certain file types by extension:
+<files *.html>
+#SetOutputFilter DEFLATE
+</files>

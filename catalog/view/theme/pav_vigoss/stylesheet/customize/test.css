@@ -1,0 +1,84 @@
+
+/* customize for body,body .home1 */ 
+body,body .home1 { 
+font-family:inherit 
+} 
+
+/* customize for .menu */ 
+.menu { 
+background-color:#942594;
+background-image:url(../../image/pattern/pattern10.png) 
+} 
+
+/* customize for .pav-megamenu .navbar-nav li a */ 
+.pav-megamenu .navbar-nav li a { 
+color:#18d9d6 
+} 
+
+/* customize for #pav-megamenu .dropdown-menu */ 
+#pav-megamenu .dropdown-menu { 
+background-color:#c4a01c;
+background-image:url(../../image/pattern/pattern10.png) 
+} 
+
+/* customize for .bo-mainmenu .widget-heading, #bo-mainmenu .dropdown-menu */ 
+.bo-mainmenu .widget-heading, #bo-mainmenu .dropdown-menu { 
+color:#cc0e0e 
+} 
+
+/* customize for .bo-mainmenu .dropdown-menu a,.bo-mainmenu .dropdown-menu li a */ 
+.bo-mainmenu .dropdown-menu a,.bo-mainmenu .dropdown-menu li a { 
+color:#eeff00 
+} 
+
+/* customize for #footer .footer-center */ 
+#footer .footer-center { 
+background-color:#702170;
+background-image:url(../../image/pattern/pattern10.png) 
+} 
+
+/* customize for #footer .footer-center .panel-title,#footer .footer-center .container  */ 
+#footer .footer-center .panel-title,#footer .footer-center .container  { 
+color:#28c7c2 
+} 
+
+/* customize for #footer .footer-center a */ 
+#footer .footer-center a { 
+color:#13ad32 
+} 
+
+/* customize for .product-block .name a */ 
+.product-block .name a { 
+color:#660b66 
+} 
+
+/* customize for .price .price-new */ 
+.price .price-new { 
+color:#42bd86 
+} 
+
+/* customize for .price .price-old */ 
+.price .price-old { 
+color:#a128a1 
+} 
+
+/* customize for .product-label.bts */ 
+.product-label.bts { 
+background-color:#7a8cc7 
+} 
+
+/* customize for .product-label */ 
+.product-label { 
+color:#6ccc12 
+} 
+
+/* customize for .btn-outline-light */ 
+.btn-outline-light { 
+border-color:#ccd642 
+} 
+
+/* customize for .product-block .compare button, .product-block .wishlist button, .product-block .action .quickview .btn-outline-light, .product-block .action .zoom .btn-outline-light */ 
+.product-block .compare button, .product-block .wishlist button, .product-block .action .quickview .btn-outline-light, .product-block .action .zoom .btn-outline-light { 
+background-color:#19b7c2;
+color:#cf36c7 
+} 

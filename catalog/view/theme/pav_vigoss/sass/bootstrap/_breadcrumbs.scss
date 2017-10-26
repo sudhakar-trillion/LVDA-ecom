@@ -1,0 +1,29 @@
+//
+// Breadcrumbs
+// --------------------------------------------------
+
+
+.breadcrumb {
+  margin-bottom: 40px;
+  list-style: none;
+  border-radius: $border-radius-base;
+
+  li {
+    white-space: nowrap;
+    display: inline-block;
+    position:relative;
+    padding:0 16px;
+
+    + li:before {
+      content: "\f2fb"; // Unicode space added since inline-block means non-collapsing white-space
+      color: $breadcrumb-color;
+      font-family: Material-Design-Iconic-Font;
+      position: absolute;
+      left: 0;
+    }
+  }
+
+  > .active {
+    color: $breadcrumb-active-color;
+  }
+}

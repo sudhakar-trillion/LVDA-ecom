@@ -1,0 +1,319 @@
+
+.price {
+    // all page
+    color: $gray-light;
+    font-weight: 400;
+    .price-new {
+        color: $product-price-new-color;
+        font-size: $font-size-base + 2;
+    }
+    .price-old {
+        color: $product-price-old-color;
+        text-decoration: line-through;
+    }
+    // page product detail
+    &.detail {
+        .price-new {
+            font-size: 22px;
+        }
+    }
+}
+/* product style */
+.cart{
+    @include rtl-text-align-left();
+    display: inline-block;
+    button{            
+        padding:7px 7px !important;
+        color: $white;
+        font-size: 12px;
+        text-transform: capitalize;
+        border:none;
+        letter-spacing: 1px;
+        &:hover{
+            @include box-shadow(none);
+            background-color: $gray-light;
+        }
+    }
+    i{
+        font-size: 10px;
+        font-weight: 900;
+        @include rtl-padding-right(5px);
+    }
+}
+.product-block {
+    font-family: $font-family-serif !important;
+    position: relative;
+    width: 100%;
+    margin-bottom: 30px;     
+    .description {
+        line-height: 20px;
+        height: 40px;
+        overflow: hidden;
+        margin-bottom: 20px;
+        color: $text-color;
+        display: none;
+    }
+    .name {    
+        margin:0;
+        overflow: hidden;
+        text-transform: capitalize;
+        font-size: $font-size-base;
+        text-color:$gray-dark;
+        letter-spacing: 0;
+        font-weight: normal;
+        a{
+            color: #555555;
+            font-family: $font-family-serif;
+        }
+    }
+    .image {
+        position: relative;
+        overflow: hidden;
+        text-align: center;
+        .img-responsive {
+            display: inline-block;
+        }
+    }
+    .product-meta{  
+        overflow: hidden;   
+        padding-top: 12px;
+    }
+}
+.pav-hover-image{
+    opacity: 0.3;
+    width: 100%;
+    &:hover{
+        opacity: 1;
+    }
+}
+.product-label {
+    color: $white;
+    font-size: 10px;
+    font-weight: 900;
+    text-align: center;
+    position: absolute;
+    text-transform: uppercase;
+    z-index: 9;
+    &.ribbon {
+        position: absolute;
+        @include rtl-right(0);
+        top: 0;
+        @include size(40px,40px);
+        &:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            @include rtl-right(0);
+            width: 0;
+            height: 0;
+            border-top: 40px solid $gray-dark;
+            @include rtl-border-left(40px solid transparent);
+        }
+        .product-label-special {
+            display: block;
+            text-align: center;
+            height: 100%;
+            padding-top: 2px;
+            @include rotate(45deg);
+        }
+    }
+    &.ribbon2 {
+        width: 85px;
+        height: 88px;
+        overflow: hidden;
+        position: absolute;
+        top: 0px;
+        @include rtl-right(0px);
+        z-index: 99;
+        display: block;
+        font-family: $headings-font-family;
+        font-size: 10px;
+        .product-label-special {
+            display: block;
+            text-transform: uppercase;
+            text-align: center;
+            @include rotate(45deg);
+            position: relative;
+            padding: 6px 0;
+            left: -2px;
+            top: 12px;
+            width: 120px;
+            background-color: $brand-danger;
+            color: $black;
+            @include box-shadow(0px 0px 3px rgba(255, 255, 255, 0.3));
+        }
+    }
+    &.ribbon1 {
+        width: 85px;
+        height: 88px;
+        overflow: hidden;
+        position: absolute;
+        top: 0px;
+        @include rtl-left(0px);
+        z-index: 99;
+        display: block;
+        font-family: $headings-font-family;
+        font-size: 10px;
+        .product-label-special {
+            display: block;
+            text-transform: uppercase;
+            text-align: center;
+            @include rotate(-45deg);
+            position: relative;
+            padding: 6px 0;
+            @include rtl-left(-32px);
+            top: 15px;
+            width: 120px;
+            background-color: $brand-warning;
+            color: $black;
+            @include box-shadow(0px 0px 3px rgba(255, 255, 255, 0.3));
+        }
+    }
+    &.bts {
+        text-align: center;
+        display: block;
+        text-transform: uppercase;
+        height: 17px;
+        line-height: 17px;
+        padding: 0 10px;
+        position: absolute;
+        top: 20px;
+        background-color: $new-color;
+        @include rtl-left(20px);
+        .product-label-special {
+            display: block;
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+    }
+    &.sale {
+        top: 10px;
+        background-color: $white;
+        border:1px solid $theme-color;
+        @include rtl-left(10px);
+        padding:5px 10px;
+    }
+
+    &.sale-border {
+        text-align: center;
+        display: block;
+        text-transform: uppercase;
+        width: 40px;
+        height: 20px;
+        position: absolute;
+        top: 15px;
+        border: 2px solid #d95e41;
+        @include rtl-right(10px);
+        color: $gray-dark;
+    }
+    &.flag {
+        text-align: center;
+        display: block;
+        text-transform: uppercase;
+        width: 60px;
+        height: 30px;
+        position: absolute;
+        top: 15px;
+        background-color: $brand-success;
+        @include rtl-left(0);
+        line-height: 30px;
+        &:before {
+            content: "";
+            width: 0;
+            height: 0;
+            position: absolute;
+            @include rtl-right(-15px);
+            top: 0;
+            border-top: 15px solid $brand-success;
+            @include rtl-border-right(15px solid transparent);
+        }
+        &:after {
+            content: "";
+            width: 0;
+            height: 0;
+            position: absolute;
+            @include rtl-right(-15px);
+            bottom: 0;
+            border-bottom: 15px solid $brand-success;
+            @include rtl-border-right(15px solid transparent);
+        }
+    }
+}
+
+.product-block{
+    .action {
+        @include transition(all 0.4s ease-in-out 0s);
+        margin: 20px 0;
+        display: inline-block;
+        button{
+            background-color: $white;
+            padding:0;
+            color: $gray-light;
+            &:hover{
+                color: $white;
+                background-color: $brand-danger;
+                border: none;
+            }
+        }
+        .quickview, .zoom{
+            .btn-outline-light{
+                background-color: $white;
+                padding:0;
+                color: $gray-light;
+                &:hover{
+                    color: $white;
+                    background-color: $brand-danger;
+                    border: none;
+                } 
+            }
+        } 
+    }
+    &:hover {
+        .action{
+            > div{
+                opacity: 1;
+            }          
+        }
+    }
+    .product-meta{
+        .rating{
+            position: relative;
+            &:before{
+                position: absolute;
+                content: "";
+                height: 1px;
+                width: 100px;
+                top: 29px;
+                left: 0px;
+                background: #ddd;
+
+            }
+        }
+    }
+}  
+// Rating
+.rating {
+    font-weight: 300;
+    padding-bottom: 10px;
+    .fa-stack {
+        width: 1em;
+        font-size: 12px;
+        width: 12px;
+        height: 16px;
+    }
+    .fa-star {
+        color: #f7bc3d;
+        height: 11px;
+        line-height: 11px;
+        
+    }
+    .fa-star-o {
+        color: #d5d5d5;
+        height: 11px;
+        line-height: 11px;
+    }
+    a{
+        font-weight: 400;
+    }
+}

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<theme>
+		<!-- config social -->
+	<social>
+		<title>Plugin Social</title>
+		<description></description>
+		<module>
+			<title>Twitter</title>
+			<field>
+				<label>Twitter WidgetID:</label>
+				<name>t_widgetid</name>
+				<type>text</type>
+				<color>0</color>
+				<lang>0</lang>
+				<default><![CDATA[366766896986591232]]></default>
+				<description><![CDATA[Please go to the page <a href="https://twitter.com/settings/widgets/new">https://twitter.com/settings/widgets/new</a>, then create a widget and get data-widget-id to input in this param.]]></description>
+			</field>
+			<field>
+				<label>UserName</label>
+				<name>t_username</name>
+				<type>text</type>
+				<color>0</color>
+				<lang>0</lang>
+				<default><![CDATA[pavothemes]]></default>
+			</field>
+			<field>
+				<label>Name Color</label>
+				<name>t_name</name>
+				<type>text</type>
+				<color>1</color>
+				<lang>0</lang>
+			</field>
+			<field>
+				<label>Title Color</label>
+				<name>t_title</name>
+				<type>text</type>
+				<color>1</color>
+				<lang>0</lang>
+			</field>
+			<field>
+				<label>Link Color</label>
+				<name>t_link</name>
+				<type>text</type>
+				<color>1</color>
+				<lang>0</lang>
+			</field>
+			<field>
+				<label>Border Color</label>
+				<name>t_border</name>
+				<type>text</type>
+				<color>1</color>
+				<lang>0</lang>
+			</field>
+		</module>
+	</social>
+	<!-- config social -->
+	
+	<footer>
+		<title>Footer Bottom Block</title>
+		<description></description>
+	 	<module>
+	 	 	<title>Address Footer</title>
+	 	 	<field>
+	 	 		<name>widget_address</name>
+	 	 		<label>Content</label>
+	 	 		<type>textarea</type>
+	 	 		<lang>1</lang>
+	 	 		<default><![CDATA[
+	 	 			<div class="panel box-infor">
+					  <div class="panel-heading">
+					    <h4 class="panel-title">About us</h4>
+					  </div>
+					  <div class="panel-body">
+					    <p>This is Photoshop's version of Lorem Ipsum. Proin gravida nibh vel velit autor aliquet. Aenean sollicitudin, lorem quis bibendum aucto nisi elit consequat ipsum.
+					    </p>
+					    <hr>
+					    <ul class="list-inline social">  
+					    <li><a href="#"><i class="icons icons-outline icons-sm fa fa-facebook"></i></a></li>  
+					    <li><a href="#"><i class="icons icons-outline icons-sm fa fa-twitter"></i></a></li>    
+					    <li><a href="#"><i class="icons icons-outline icons-sm fa fa-google-plus"></i></a></li>  
+					    <li><a href="#"><i class="icons icons-outline icons-sm fa fa-tumblr"></i></a></li>  
+					    <li><a href="#"><i class="icons icons-outline icons-sm fa fa-wifi"></i></a></li>
+					    <li><a href="#"><i class="icons icons-outline icons-sm fa fa-skype"></i></a></li>
+					    </ul>
+					  </div>
+					</div>
+
+	 	 		]]></default>
+	 		</field>
+	 	</module>
+	 
+		<module>
+	 	 	<title>Logo Footer</title>
+	 	 	<field>
+	 	 		<name>widget_logo_footer</name>
+	 	 		<label>Content</label>
+	 	 		<type>textarea</type>
+	 	 		<lang>1</lang>
+	 	 		<default><![CDATA[
+	 	 			<div class="logo-footer"><a href="#"><img alt="" src="image/catalog/logo-footer.png" class="img-responsive"> </a>
+<p>This is Photoshop's version of Lorem Ipsum.<br>gravida nibh vel velit autor aliquet. Aenean sollici<br>tudin, lorem quis bibendum aucto.</p>
+<a href="#" class="btn"><span> PURCHASE NOW </span></a></div>	
+	 	 			]]></default>
+	 		</field>
+	 	</module>	
+	</footer>	
+</theme>
+
