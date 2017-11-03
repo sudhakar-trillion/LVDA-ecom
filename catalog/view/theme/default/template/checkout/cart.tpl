@@ -30,9 +30,9 @@
     <?php } ?>
     <div id="content" class="col-sm-12 " style="margin:auto; float:none;  margin-top:40px;"><?php echo $content_top; ?>
       <h1 class="sh-title"><?php echo $heading_title; ?>
-        <?php if ($weight) { ?>
+       <!-- <?php if ($weight) { ?>
         &nbsp;(<?php echo $weight; ?>)
-        <?php } ?>
+        <?php } ?>-->
       </h1>
       <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data">
         <div class="table-responsive">
@@ -120,12 +120,16 @@
         </div>
       </form>
       <?php if ($modules) { ?>
-      <h2><?php echo $text_next; ?></h2>
-      <p class="wo-para"><?php echo $text_next_choice; ?></p>
-      <div class="panel-group sh-accor" id="accordion">
-        <?php foreach ($modules as $module) { ?>
-        <?php echo $module; ?>
-        <?php } ?>
+     <!-- <h2><?php echo $text_next; ?></h2>
+      <p class="wo-para"><?php echo $text_next_choice; ?></p>-->
+      <div class="panel-group sh-accor cart-accord-content" id="accordion">
+        <?php 
+        		$cnt=0; 
+                foreach ($modules as $module) 
+                {
+                  	 echo $module; 
+                 } 
+          ?>
       </div>
       <?php } ?>
       <br />

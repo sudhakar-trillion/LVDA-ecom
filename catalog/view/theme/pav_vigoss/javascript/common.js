@@ -411,6 +411,18 @@ var compare = {
 $(document).ready(function()
 { 
 	
+	$(".cart-accord-content .panel-default").each(function(ind,val)
+	{
+		if(ind>0)
+			$(this).hide();
+		else
+		{
+			//$(this+" .fa-caret-down").trigger('click');
+		 var elem = $(this).find('h4 a' );
+		 elem.trigger('click');
+		}
+	});
+	
 $(".reviewsection").on('click',function()
 {
 	
