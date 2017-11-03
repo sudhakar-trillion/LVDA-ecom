@@ -48,6 +48,9 @@ class ControllerAccountOrder extends Controller {
 		$data['column_total'] = $this->language->get('column_total');
 		$data['column_status'] = $this->language->get('column_status');
 		$data['column_date_added'] = $this->language->get('column_date_added');
+		$data['column_trackno'] =	$this->language->get('column_trackno');
+		
+		
 
 		$data['button_view'] = $this->language->get('button_view');
 		$data['button_continue'] = $this->language->get('button_continue');
@@ -196,6 +199,7 @@ if( isset($crentpge[3] ))
 			$data['column_total'] = $this->language->get('column_total');
 			$data['column_action'] = $this->language->get('column_action');
 			$data['column_date_added'] = $this->language->get('column_date_added');
+			$data['column_trackno'] =	$this->language->get('column_trackno');
 			$data['column_status'] = $this->language->get('column_status');
 			$data['column_comment'] = $this->language->get('column_comment');
 
@@ -383,15 +387,42 @@ if( isset($crentpge[3] ))
 			$data['histories'] = array();
 
 			$results = $this->model_account_order->getOrderHistories($this->request->get['order_id']);
-
+			
+			//get the Tracking Order Number and Courier Name
+			
+			$trackdetails = $this->model_account_order->getTrackingNumber($this->request->get['order_id']);
+			
+			if($trackdetails!='0')
+			{
+				foreach($trackdetails->rows as $trackinfo)
+				{
+					$TrackingNumber=$trackinfo['TrackingNumber'];
+					$Courier=$trackinfo['Courier'];
+				}
+			}
+			else
+				{
+					$TrackingNumber='';
+					$Courier='';	
+				}
 			foreach ($results as $result) {
+				
+				
+				
+				
 				$data['histories'][] = array(
 					'date_added' => date($this->language->get('date_format_short'), strtotime($result['date_added'])),
 					'status'     => $result['status'],
-					'comment'    => $result['notify'] ? nl2br($result['comment']) : ''
+					'comment'    => $result['notify'] ? nl2br($result['comment']) : '',
+					'TrackingNumber' =>$TrackingNumber
+					
 				);
 			}
-
+			
+			/*echo "<pre>";
+			print_r($data['histories']);
+			exit;*/
+			
 			//$data['continue'] = $this->url->link('account/order', '', true);
 			$data['continue'] = $this->createLink('my-orders');
 

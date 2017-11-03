@@ -240,6 +240,7 @@ class ControllerProductProduct extends Controller {
 
 
 
+#echo $category_id; exit;
 
 		$this->load->model('catalog/product');
 
@@ -388,6 +389,12 @@ class ControllerProductProduct extends Controller {
 			$data['images'] = array();
 
 			$results = $this->model_catalog_product->getProductImages($this->request->get['product_id']);
+			
+			/*
+			echo "<pre>";
+			print_r($product_info);
+			exit;
+			*/
 
 			foreach ($results as $result) {
 				$data['images'][] = array(
@@ -413,6 +420,8 @@ class ControllerProductProduct extends Controller {
 			} else {
 				$data['tax'] = false;
 			}
+
+//echo $data['special'];exit;
 
 			$discounts = $this->model_catalog_product->getProductDiscounts($this->request->get['product_id']);
 
@@ -551,10 +560,7 @@ class ControllerProductProduct extends Controller {
 					
 				);
 			}
-
-
-
-
+	
 			
 		if($this->customer->isLogged())
 			{
@@ -697,7 +703,33 @@ exit;
 			$data['crosssaleproducts'] = $crosssaleproducts;
 		else
 			$data['crosssaleproducts'] = '0';
+
+//get the upsale products
+	
+	$special = explode("rs.",strtolower($data['special']));	
+	
+	if( trim(end($special)) >0 )
+		$finalPrice = $data['special'];
+	else
+		$finalPrice = $data['price'];		
 		
+			
+//	echo $finalPrice; exit; 
+	
+		
+	$upsaleProducts = $this->model_catalog_product->getupsaleproducts( $category_id,$this->request->get['product_id'],$finalPrice);
+	
+	if( empty($upsaleProducts) )
+	$upsaleProducts='0';
+	
+	$data['upsaleProducts'] = $upsaleProducts;
+		
+	//echo $this->request->get['product_id']; exit; 	
+	/*
+		echo "<pre>";
+		print_r($data['upsaleProducts']);
+		exit;
+	*/
 			
 
 			$this->response->setOutput($this->load->view('product/product', $data));

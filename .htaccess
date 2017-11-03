@@ -105,6 +105,7 @@ RewriteRule ^order-placed index.php?route=checkout/success [L,QSA]
 
 RewriteRule ^social-login index.php?route=extension/module/oneall/register [L,QSA]
 
+RewriteRule ^run-cron index.php?route=cronjob/runcron [L,QSA]
 
 
 

@@ -1,9 +1,45 @@
 <?php
-if( $_SERVER['SERVER_ADDR'] == "192.168.0.4" )
-{ 
+if( $_SERVER['SERVER_ADDR'] == "192.168.0.3"  )
+{
+	 
 
-define('HTTP_SERVER', 'http://192.168.0.4/pav-vigoss/');
-define('HTTPS_SERVER', 'http://192.168.0.4/pav-vigoss/');
+define('HTTP_SERVER', 'http://192.168.0.3/pav-vigoss/');
+define('HTTPS_SERVER', 'http://192.168.0.3/pav-vigoss/');
+
+/*
+
+define('HTTP_SERVER', 'http://localhost/pav-vigoss/');
+define('HTTPS_SERVER', 'http://localhost/pav-vigoss/');
+*/
+
+// DIR
+define('DIR_APPLICATION', 'C:/xampp/htdocs/pav-vigoss/catalog/');
+define('DIR_SYSTEM', 'C:/xampp/htdocs/pav-vigoss/system/');
+define('DIR_IMAGE', 'C:/xampp/htdocs/pav-vigoss/image/');
+define('DIR_LANGUAGE', 'C:/xampp/htdocs/pav-vigoss/catalog/language/');
+define('DIR_TEMPLATE', 'C:/xampp/htdocs/pav-vigoss/catalog/view/theme/');
+define('DIR_CONFIG', 'C:/xampp/htdocs/pav-vigoss/system/config/');
+define('DIR_CACHE', 'C:/xampp/htdocs/pav-vigoss/system/storage/cache/');
+define('DIR_DOWNLOAD', 'C:/xampp/htdocs/pav-vigoss/system/storage/download/');
+define('DIR_LOGS', 'C:/xampp/htdocs/pav-vigoss/system/storage/logs/');
+define('DIR_MODIFICATION', 'C:/xampp/htdocs/pav-vigoss/system/storage/modification/');
+define('DIR_UPLOAD', 'C:/xampp/htdocs/pav-vigoss/system/storage/upload/');
+
+// DB
+define('DB_DRIVER', 'mysqli');
+define('DB_HOSTNAME', 'localhost');
+define('DB_USERNAME', 'root');
+define('DB_PASSWORD', '');
+define('DB_DATABASE', 'pavvigoss');
+define('DB_PORT', '3306');
+define('DB_PREFIX', 'oc_');
+}
+else if( $_SERVER['HTTP_HOST'] == 'localhost')
+{
+	 
+
+define('HTTP_SERVER', 'http://localhost/pav-vigoss/');
+define('HTTPS_SERVER', 'http://locahost/pav-vigoss/');
 
 /*
 

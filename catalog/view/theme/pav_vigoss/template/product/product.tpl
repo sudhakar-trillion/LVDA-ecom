@@ -171,7 +171,7 @@
                      
           <ul class="list-unstyled">
           
-          <li><span class="check-box text-primary"><i class="zmdi zmdi-check zmdi-hc-fw"></i></span><?php echo $text_stock; ?><?php if ($AvailQuantity > 2) { echo $stock;} else echo $OutOfStock; ?></li>
+          <li><span class="check-box text-primary"><i class="zmdi zmdi-check zmdi-hc-fw"></i></span><?php echo $text_stock; ?><?php if ($AvailQuantity > 1) { echo $stock;} else echo $OutOfStock; ?></li>
           
           
 <!--              <?php if ($stock) { ?>
@@ -385,11 +385,23 @@
         </div>
       </div>
 
-        <?php  require( ThemeControlHelper::getLayoutPath( 'product/info/'.$layout_pinfo.'.tpl' ) );  ?>
+   <?php  require( ThemeControlHelper::getLayoutPath( 'product/info/'.$layout_pinfo.'.tpl' ) );  ?>
    
-
-      
-      <?php echo $content_bottom; ?></div>
+    <?PHP
+	if( $crosssaleproducts=='0')
+    {
+    ?>  <div>
+    <?PHP
+    }
+    ?>
+     <?php echo $content_bottom; ?></div>
+  <?PHP
+	if( $crosssaleproducts=='0')
+    {
+    ?>  <div>
+    <?PHP
+    }
+    ?>
     <?php echo $column_right; ?></div>
 
 <?PHP
@@ -463,7 +475,68 @@
             </div>
       </div>
       
+    <?PHP
+
+    if($upsaleProducts=='0')
+    {
     
+    }
+    else{
+    ?>
+    <h1 class="mostviewed">You may also be interested in</h1>
+    <div class="products-block most-v product-recently-viewed">
+		 <div class="owl-carousel owl-theme">
+    <?PHP
+    		foreach( $upsaleProducts as $upsale)
+            {
+            ?>
+            <div class="item mostviewed_prdcts" > 
+        
+        <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12   last first">			
+			
+<div class="product-block item-default" itemscope="">
+
+			 <div class="image">
+ 
+			<a class="img" href="<?PHP echo $upsale['href'] ?>"><img src="<?PHP echo $upsale['ProductImage']?>"  class="img-responsive"></a>
+                        
+					</div>
+		
+	<div class="product-meta">
+		<div class="left">
+			<h3 class="name"><a href="<?PHP echo $upsale['href'] ?>"><?PHP echo $upsale['name'] ?></a></h3>
+
+            <div class="price" itemscope="" itemprop="offers">
+                     <span class="special-price"><?PHP echo $upsale['currency']." ".$upsale['SalePrice'];  ?></span>
+                  
+                    <meta content="" itemprop="priceCurrency">
+            </div>
+                
+                
+					</div>
+
+		<div class="clearfix"></div>
+
+	</div>
+    <div class="clearfix"></div>
+
+</div>
+</div>
+        
+        
+        <div class="clearfix"></div>
+        
+         </div>
+            <?PHP
+            }
+        	?>
+         </div>
+	</div>
+            <?PHP
+        }
+        
+    
+    ?>
 
 
 
@@ -477,11 +550,7 @@
       <?PHP
 	if(sizeof($recentlyviewedProductsInfo)>0)
     {
-    
-    
-?>
-		<div class="" >
-     
+    ?>
             <div class="row most-nopad">
 
 
@@ -614,12 +683,9 @@
       </div>
       
     </div>
-            
-    	</div>
 <?PHP
-	
     }
-	?>
+?>
         <!-- recently viewed products ends here-->
         
 </div>

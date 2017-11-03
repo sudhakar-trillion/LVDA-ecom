@@ -24,48 +24,43 @@
     <?php $class = 'col-sm-12'; ?>
     <?php } ?>
     <div id="content" class="col-md-11 my-ac-order add-head reg-acount"><?php echo $content_top; ?>
-      <h2 class="text-center mb"><?php echo $heading_title; ?></h2>
+      
+      
+        <?php if ($histories) { ?>
+      <h3 style="text-align:left"><?php echo $text_history; ?> </h3>
+       
       <table class="table table-bordered table-hover add-mywhish">
         <thead>
           <tr>
-            <td class="text-left" colspan="2"><?php echo $text_order_detail; ?></td>
+            <td class="text-left"><?php echo $column_date_added; ?></td>
+            <td class="text-left"><?php echo $column_status; ?></td>
+            <td class="text-left"><?php echo $column_comment; ?></td>
+            <td class="text-left"><?php echo $column_trackno; ?></td>
           </tr>
         </thead>
         <tbody>
+          <?php if ($histories) {  //echo $history['TrackingNumber'] ?>
+          <?php foreach ($histories as $history) { ?>
           <tr>
-            <td class="text-left" style="width: 50%;"><?php if ($invoice_no) { ?>
-              <b><?php echo $text_invoice_no; ?></b> <?php echo $invoice_no; ?><br />
-              <?php } ?>
-              <b><?php echo $text_order_id; ?></b> #<?php echo $order_id; ?><br />
-              <b><?php echo $text_date_added; ?></b> <?php echo $date_added; ?></td>
-            <td class="text-left" style="width: 50%;"><?php if ($payment_method) { ?>
-              <b><?php echo $text_payment_method; ?></b> <?php echo $payment_method; ?><br />
-              <?php } ?>
-              <?php if ($shipping_method) { ?>
-              <b><?php echo $text_shipping_method; ?></b> <?php echo $shipping_method; ?>
-              <?php } ?></td>
+            <td class="text-left"><?php echo $history['date_added']; ?></td>
+            <td class="text-left"><?php echo $history['status']; ?></td>
+            <td class="text-left"><?php echo $history['comment']; ?></td>
+            <td class="text-left"><?PHP if( $history['status']=='Processing') echo ''; else {  echo '<b>'.$history['TrackingNumber'].'</b>'; ?>: <a class="text-highlight" href="http://couriertrack.in/tracking_dtdc_courier.php" target="_blank">Track Your Order</a> <?PHP } ?></td>
           </tr>
+          <?php } ?>
+          <?php } else { ?>
+          <tr>
+            <td colspan="3" class="text-center"><?php echo $text_no_results; ?></td>
+          </tr>
+          <?php } ?>
         </tbody>
       </table>
-      <table class="table table-bordered table-hover add-mywhish">
-        <thead>
-          <tr>
-            <td class="text-left" style="width: 50%; vertical-align: top;"><?php echo $text_payment_address; ?></td>
-            <?php if ($shipping_address) { ?>
-            <td class="text-left" style="width: 50%; vertical-align: top;"><?php echo $text_shipping_address; ?></td>
-            <?php } ?>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="text-left"><?php echo $payment_address; ?></td>
-            <?php if ($shipping_address) { ?>
-            <td class="text-left"><?php echo $shipping_address; ?></td>
-            <?php } ?>
-          </tr>
-        </tbody>
-      </table>
+      <?php } ?>
+      
+    
+      
       <div class="table-responsive">
+      <h3 style="text-align:left"><?php echo $heading_title; ?></h3>
         <table class="table table-bordered table-hover add-mywhish">
           <thead>
             <tr>
@@ -138,33 +133,49 @@
         </tbody>
       </table>
       <?php } ?>
-      <?php if ($histories) { ?>
-      <h3><?php echo $text_history; ?></h3>
-      <table class="table table-bordered table-hover add-mywhish">
+       <h3 style="text-align:left">Payment Details</h3>
+        <table class="table table-bordered table-hover add-mywhish">
         <thead>
           <tr>
-            <td class="text-left"><?php echo $column_date_added; ?></td>
-            <td class="text-left"><?php echo $column_status; ?></td>
-            <td class="text-left"><?php echo $column_comment; ?></td>
+            <td class="text-left" colspan="2"><?php echo $text_order_detail; ?></td>
+            
           </tr>
         </thead>
         <tbody>
-          <?php if ($histories) { ?>
-          <?php foreach ($histories as $history) { ?>
           <tr>
-            <td class="text-left"><?php echo $history['date_added']; ?></td>
-            <td class="text-left"><?php echo $history['status']; ?></td>
-            <td class="text-left"><?php echo $history['comment']; ?></td>
+            <td class="text-left" style="width: 50%;"><?php if ($invoice_no) { ?>
+              <b><?php echo $text_invoice_no; ?></b> <?php echo $invoice_no; ?><br />
+              <?php } ?>
+              <b><?php echo $text_order_id; ?></b> #<?php echo $order_id; ?><br />
+              <b><?php echo $text_date_added; ?></b> <?php echo $date_added; ?></td>
+            <td class="text-left" style="width: 50%;"><?php if ($payment_method) { ?>
+              <b><?php echo $text_payment_method; ?></b> <?php echo $payment_method; ?><br />
+              <?php } ?>
+              <?php if ($shipping_method) { ?>
+              <b><?php echo $text_shipping_method; ?></b> <?php echo $shipping_method; ?>
+              <?php } ?></td>
           </tr>
-          <?php } ?>
-          <?php } else { ?>
-          <tr>
-            <td colspan="3" class="text-center"><?php echo $text_no_results; ?></td>
-          </tr>
-          <?php } ?>
         </tbody>
       </table>
-      <?php } ?>
+      <table class="table table-bordered table-hover add-mywhish">
+        <thead>
+          <tr>
+            <td class="text-left" style="width: 50%; vertical-align: top;"><?php echo $text_payment_address; ?></td>
+            <?php if ($shipping_address) { ?>
+            <td class="text-left" style="width: 50%; vertical-align: top;"><?php echo $text_shipping_address; ?></td>
+            <?php } ?>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="text-left"><?php echo $payment_address; ?></td>
+            <?php if ($shipping_address) { ?>
+            <td class="text-left"><?php echo $shipping_address; ?></td>
+            <?php } ?>
+          </tr>
+        </tbody>
+      </table>
+    
       <div class="buttons no-bg-bt clearfix">
         <div class="pull-right"><a href="<?php echo $continue; ?>" class="btn btn-primary con-check"><?php echo $button_continue; ?></a></div>
       </div>

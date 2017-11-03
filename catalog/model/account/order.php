@@ -168,4 +168,14 @@ class ModelAccountOrder extends Model {
 
 		return $query->row['total'];
 	}
+
+	public function getTrackingNumber($orderid)
+	{
+		$qry = $this->db->query("SELECT TrackingNumber, Courier FROM oc_courier_tracks where OrderId=".$orderid);
+		if($qry->num_rows>0)
+			return $qry;
+		else
+			return "0";
+	}
+
 }

@@ -757,3 +757,7 @@ h2.price {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+.text-highlight
+{
+	color:#F00 !important;	
+}
