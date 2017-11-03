@@ -97,7 +97,7 @@
                     
                     
                     </td>
-                <td class="text-right"><?php echo $product['price']; ?></td>
+                <td class="text-right"><?php if( $product['specialprice']!='') { echo '<strike>'.$product['price'].'</strike>'; echo " ".$Currency. $product['specialprice']; } else  echo $product['price'];?> </td>
                 <td class="text-right"><?php echo $product['total']; ?></td>
               </tr>
               <?php } ?>

@@ -172,7 +172,13 @@ class Cart {
 						$price = $crosssaleamount->row['SalePrice']; 
 					}
 				else
-				$price = $product_query->row['price'];
+				{
+					$checkspecial = $this->db->query("SELECT price FROM oc_product_special where product_id=".$cart['product_id']);
+					if( $checkspecial->num_rows>0)
+						$price = (int)$checkspecial->row['price'];
+					else
+						$price = $product_query->row['price'];
+				}
 
 				// Product Discounts
 				$discount_quantity = 0;

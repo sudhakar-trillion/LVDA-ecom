@@ -94,20 +94,36 @@ class ControllerCommonCart extends Controller {
 					'type'  => $option['type']
 				);
 			}
+			
+			$checkspecial = $this->db->query("SELECT price FROM oc_product_special where product_id=".$product['product_id']);
+			if( $checkspecial->num_rows>0)
+			{
+			$specialprice=(int)$checkspecial->row['price'];
+			
+			}
+			else
+			{
+			$specialprice='';
+			}
+			
 
 			// Display prices
 			if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
-				$price = $this->currency->format($this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
+						$price = $this->currency->format($this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
 			} else {
 				$price = false;
 			}
 
 			// Display prices
 			if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
-				$total = $this->currency->format($this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax')) * $product['quantity'], $this->session->data['currency']);
+					$total = $this->currency->format($this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax')) * $product['quantity'], $this->session->data['currency']);
 			} else {
 				$total = false;
 			}
+
+
+		
+			//echo "$price".$total; 
 
 			$data['products'][] = array(
 				'cart_id'   => $product['cart_id'],

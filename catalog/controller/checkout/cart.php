@@ -115,16 +115,37 @@ class ControllerCheckoutCart extends Controller {
 						'value' => (utf8_strlen($value) > 20 ? utf8_substr($value, 0, 20) . '..' : $value)
 					);
 				}
+				
+			$checkspecial = $this->db->query("SELECT price FROM oc_product_special where product_id=".$product['product_id']);
+			if( $checkspecial->num_rows>0)
+			{
+			$specialprice=(int)$checkspecial->row['price'];
+			
+			}
+			else
+			{
+			$specialprice='';
+			}
 
+				
 				// Display prices
 				if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
-					$price = $this->currency->format($this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
+					
+					#echo $product['price'].":".$specialprice; exit; 
+					
+					if( $specialprice!='')
+						$price = $this->currency->format( $this->tax->calculate($specialprice, $product['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
+					else
+						$price = $this->currency->format($this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
 				} else {
 					$price = false;
 				}
 
 				// Display prices
 				if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
+					if( $specialprice!='')
+						$total = $this->currency->format($this->tax->calculate($specialprice, $product['tax_class_id'], $this->config->get('config_tax')) * $product['quantity'], $this->session->data['currency']);
+					else
 					$total = $this->currency->format($this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax')) * $product['quantity'], $this->session->data['currency']);
 				} else {
 					$total = false;
@@ -152,6 +173,12 @@ class ControllerCheckoutCart extends Controller {
 					}
 				}
 
+			if( $this->session->data['currency'] == "INR")
+				$data['Currency'] = "Rs.";
+			else
+				$data['Currency'] = $this->session->data['currency'];
+			
+
 				$data['products'][] = array(
 					'cart_id'   => $product['cart_id'],
 					'thumb'     => $image,
@@ -163,6 +190,7 @@ class ControllerCheckoutCart extends Controller {
 					'stock'     => $product['stock'] ? true : !(!$this->config->get('config_stock_checkout') || $this->config->get('config_stock_warning')),
 					'reward'    => ($product['reward'] ? sprintf($this->language->get('text_points'), $product['reward']) : ''),
 					'price'     => $price,
+					'specialprice'=>$specialprice,
 					'total'     => $total,
 					'href'      => $this->url->link('product/product', 'product_id=' . $product['product_id']),
 					"CrossSell" => $product['CrossSell']
@@ -304,6 +332,8 @@ class ControllerCheckoutCart extends Controller {
 		$this->load->model('catalog/product');
 
 		$product_info = $this->model_catalog_product->getProduct($product_id);
+	
+		
 
 		if( $product_info['quantity'] <=1 )
 		{
@@ -365,7 +395,9 @@ class ControllerCheckoutCart extends Controller {
 					$crosssale = $this->request->post['crosssale'];
 					$parentProduct = $this->request->post['parentProduct'];
 				}
-				
+			
+		
+			
 				$this->cart->add($this->request->post['product_id'], $quantity, $option, $recurring_id,$crosssale,$parentProduct);
 
 				//$json['success'] = sprintf($this->language->get('text_success'), $this->url->link('product/product', 'product_id=' . $this->request->post['product_id']), $product_info['name'], $this->url->link('checkout/cart'));
@@ -391,7 +423,9 @@ class ControllerCheckoutCart extends Controller {
 					'taxes'  => &$taxes,
 					'total'  => &$total
 				);
-
+				
+				
+				
 				// Display prices
 				if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
 					$sort_order = array();

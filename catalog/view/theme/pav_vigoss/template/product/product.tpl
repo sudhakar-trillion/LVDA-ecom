@@ -385,7 +385,7 @@
         </div>
       </div>
 
-   <?php  require( ThemeControlHelper::getLayoutPath( 'product/info/'.$layout_pinfo.'.tpl' ) );  ?>
+   <?php require( ThemeControlHelper::getLayoutPath( 'product/info/'.$layout_pinfo.'.tpl' ) );  ?>
    
     <?PHP
 	if( $crosssaleproducts=='0')

@@ -411,7 +411,21 @@ var compare = {
 $(document).ready(function()
 { 
 	
-	//$(".pav-parrent").find('a').removeAttr('href').css({'cursor':'pointer'});
+$(".reviewsection").on('click',function()
+{
+	
+	if( $("i.reviewcaret").hasClass('fa-caret-down') ) 
+	{
+		$("i.reviewcaret").removeClass('fa-caret-down');
+		$("i.reviewcaret").addClass('fa-caret-up');
+	}
+	else if( $("i.reviewcaret").hasClass('fa-caret-up'))
+		{
+			$("i.reviewcaret").removeClass('fa-caret-up');
+			$("i.reviewcaret").addClass('fa-caret-down');
+		}
+	
+});
 	
 	
 });

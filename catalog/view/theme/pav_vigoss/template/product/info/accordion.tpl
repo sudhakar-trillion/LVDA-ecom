@@ -53,7 +53,7 @@
                     <div class="panel-heading">
                         <h4 class="panel-title">
                             <a data-toggle="collapse" data-parent="#accordion-v5" class="collapsed reviewsection" href="#collapse-v5-tab_review">
-                                <?php echo $tab_review; ?>
+                                <?php echo $tab_review; ?><i class="fa fa-caret-down reviewcaret"></i>
                             </a>
                         </h4>
                     </div>
