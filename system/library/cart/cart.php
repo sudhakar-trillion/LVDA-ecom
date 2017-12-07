@@ -33,6 +33,7 @@ class Cart {
 	public function getProducts() {
 		$product_data = array();
 
+
 		$cart_query = $this->db->query("SELECT * FROM " . DB_PREFIX . "cart WHERE customer_id = '" . (int)$this->customer->getId() . "' AND session_id = '" . $this->db->escape($this->session->getId()) . "'");
 
 	
@@ -122,7 +123,7 @@ class Cart {
 									}
 
 									if ($option_value_query->row['subtract'] && (!$option_value_query->row['quantity'] || ($option_value_query->row['quantity'] < $cart['quantity']))) {
-										$stock = false;
+
 									}
 
 									$option_data[] = array(
@@ -226,7 +227,10 @@ class Cart {
 				}
 
 				// Stock
-				if (!$product_query->row['quantity'] || ($product_query->row['quantity'] < $cart['quantity'])) {
+//				echo $product_query->row['quantity'].":".$product_query->row['quantity']."<".$cart['quantity']; exit; 
+				//if (!$product_query->row['quantity'] || ($product_query->row['quantity'] < $cart['quantity'])) 
+				if ( $product_query->row['quantity']==0 ) 
+				{
 					$stock = false;
 				}
 
@@ -297,8 +301,10 @@ class Cart {
 
 		if (!$query->row['total']) {
 			$this->db->query("INSERT " . DB_PREFIX . "cart SET customer_id = '" . (int)$this->customer->getId() . "', session_id = '" . $this->db->escape($this->session->getId()) . "', product_id = '" . (int)$product_id . "', recurring_id = '" . (int)$recurring_id . "', `option` = '" . $this->db->escape(json_encode($option)) . "', quantity = '" . (int)$quantity . "', CrossSell='Yes', parentProduct=$parentProduct, date_added = NOW()");
+			return $this->db->getLastId();
 		} else {
 			$this->db->query("UPDATE " . DB_PREFIX . "cart SET quantity = (quantity + " . (int)$quantity . ") WHERE customer_id = '" . (int)$this->customer->getId() . "' AND session_id = '" . $this->db->escape($this->session->getId()) . "' AND product_id = '" . (int)$product_id . "' AND recurring_id = '" . (int)$recurring_id . "' AND `option` = '" . $this->db->escape(json_encode($option)) . "' AND CrossSell='Yes' AND parentProduct=$parentProduct ");
+			return $this->db->countAffected();
 		}
 		
 		
@@ -309,8 +315,10 @@ class Cart {
 
 		if (!$query->row['total']) {
 			$this->db->query("INSERT " . DB_PREFIX . "cart SET customer_id = '" . (int)$this->customer->getId() . "', session_id = '" . $this->db->escape($this->session->getId()) . "', product_id = '" . (int)$product_id . "', recurring_id = '" . (int)$recurring_id . "', `option` = '" . $this->db->escape(json_encode($option)) . "', quantity = '" . (int)$quantity . "', date_added = NOW(), parentProduct=''");
+			return $this->db->getLastId();
 		} else {
 			$this->db->query("UPDATE " . DB_PREFIX . "cart SET quantity = (quantity + " . (int)$quantity . ") WHERE customer_id = '" . (int)$this->customer->getId() . "' AND session_id = '" . $this->db->escape($this->session->getId()) . "' AND product_id = '" . (int)$product_id . "' AND recurring_id = '" . (int)$recurring_id . "' AND `option` = '" . $this->db->escape(json_encode($option)) . "' AND parentProduct=''");
+			return $this->db->countAffected();
 		}
 		
 	}
@@ -424,6 +432,8 @@ class Cart {
 	}
 
 	public function hasStock() {
+		
+		
 		foreach ($this->getProducts() as $product) {
 			if (!$product['stock']) {
 				return false;

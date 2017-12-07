@@ -200,11 +200,16 @@ else
 
 		$query = $this->db->query($sql);
 
-		foreach ($query->rows as $result) {
+		foreach ($query->rows as $result) 
+		{
 			$product_data[$result['product_id']] = $this->getProduct($result['product_id']);
 		}
-	
-	
+	/*
+	echo "hey<pre>";
+		print_r($product_data);
+	exit;
+		
+		*/
 		return $product_data;
 	}
 
@@ -904,5 +909,480 @@ public function getupsaleproducts( $category_id,$product_id,$productprice )
 }
 
 //get the upsale products ends here
+
+public function notifyrestore($Product,$UserEmail)
+{
+		
+		$qry = $this->db->query("SELECT * from oc_restock_notification where Email='".$UserEmail."' and ProductId=".$Product."  order by NotificationId DESC LIMIT 1");
+		
+		if($qry->num_rows>0)
+		{
+			return "-1";	
+		}
+		else
+		{		
+			$this->db->query("INSERT INTO oc_restock_notification values('',".$Product.",'".$UserEmail."','".date('Y-m-d')."','".date('Y-m-d H:i:s')."','Unnotified')");
+		return $this->db->getLastId(); 
+		}
+		
+}
+
+
+//updateQuantity starts here
+
+public function updateQuantity($productsincart,$quantity,$master_exists,$prdide,$add_remove)
+{
+	
+	//first check whether master_exists or not 
+	//if exists then take all the products quantiy from the temporary table
+	//and update the products table by reducing the number 
+	
+	
+	// if master_exists not there then add the cart items to the temporay table
+	// check whether the product id with the current session
+	// if anything matches then take the sum of products and update it
+	
+	
+	$totalsessions = $this->session->data;
+	
+	if( $master_exists=="no" && ( isset($totalsessions['customersess']) ) )
+		{
+			foreach( $productsincart as $item)
+			{
+				//echo $item['cart_id']." Quantity:".$item['quantity'];	
+			
+			// check whether the product under this session already there in the tempcart table
+			
+			$qry = $this->db->query("SELECT Quantity FROM oc_temp_cart where ProductId=".$item['product_id']." and User_Master_Session='".$this->session->data['customersess']."'" );
+			
+			
+			if( $qry->num_rows>0)
+			{
+				$this->db->query("UPDATE ".DB_PREFIX."temp_cart SET Quantity=".(($qry->row['Quantity'])+$quantity)." where ProductId=".$item['product_id']);
+				
+				if( $this->db->countAffected()>0)
+				{
+					
+					//remove the quantity of products from the product table
+					
+					$query = $this->db->query("SELECT Quantity FROM " . DB_PREFIX . "product where product_id=".$item['product_id']);
+					$this->db->query("UPDATE ".DB_PREFIX."product SET quantity=".($query->row['Quantity']-$quantity)." where product_id=".$item['product_id']);
+					if(  $this->db->countAffected()>0 )
+						return "1";	
+					else
+					{
+						$affectedQuant = $this->db->query("SELECT Quantity FROM " . DB_PREFIX . "temp_cart where ProductId=".$item['product_id']." and User_Master_Session='".$this->session->data['customersess']."'");
+						
+						if( $affectedQuant->row['Quantity']>1 )
+							$this->db->query("UPDATE ".DB_PREFIX."temp_cart SET Quantity=".(($qry->row['Quantity'])-$quantity)." where ProductId=".$item['product_id']." and User_Master_Session='".$this->session->data['customersess']."'");
+						else
+							$this->db->query("DELETE * FROM " . DB_PREFIX . "temp_cart where ProductId=".$item['product_id']." and User_Master_Session='".$this->session->data['customersess']."'");
+					
+						return "0";
+						$item['quantity'] = $item['quantity']-$quantity;
+					}
+				
+				}
+				else
+				{
+					$item['quantity'] = $item['quantity']-$quantity;
+					return "0";
+				}
+			}
+			else
+			{
+				
+				
+				// $this->db->escape(
+				$this->db->query("INSERT INTO " . DB_PREFIX . "temp_cart SET User_Master_Session='".$this->session->data['customersess']."', ProductId=".$item['product_id'].", Quantity=".$item['quantity'].", ExpireBy='".(time()+1800)."',AddedOn='".date('Y-m-d')."'");
+				$tempId=$this->db->getLastId();
+				
+				if($tempId>0)
+				{
+					//remove the quantity of products from the product table
+					
+					$qry = $this->db->query("SELECT Quantity FROM " . DB_PREFIX . "product where product_id=".$item['product_id']);
+					
+					
+					$this->db->query("UPDATE ".DB_PREFIX."product SET quantity=".($qry->row['Quantity']-$quantity)." where product_id=".$item['product_id']);
+					if(  $this->db->countAffected()>0 )
+					{
+						return "1";	
+					}
+					else
+					{
+						$affectedQuant = $this->db->query("SELECT Quantity FROM " . DB_PREFIX . "temp_cart where ProductId=".$item['product_id']);
+						
+						if( $affectedQuant->row['Quantity']>1 )
+							$this->db->query("UPDATE ".DB_PREFIX."temp_cart SET Quantity=".(($affectedQuant->row['Quantity'])-$quantity)." where ProductId=".$item['product_id']." and User_Master_Session='".$this->session->data['customersess']."'");
+						else
+							$this->db->query("DELETE * FROM " . DB_PREFIX . "temp_cart where ProductId=".$item['product_id']." and User_Master_Session='".$this->session->data['customersess']."'");
+					
+						return "0";
+						$item['quantity'] = $item['quantity']-$quantity;
+					}
+				}
+				else
+				{
+					$item['quantity'] = $item['quantity']-$quantity;
+					return "0";
+				}
+			
+			}
+			
+			}//foreach ends here
+			
+		}
+	elseif($master_exists=="yes")
+		{
+			//echo "$quantity"; exit;
+			
+			$test = explode("_",$this->session->data['mastersession']);
+			
+			
+			if( $test[0]=="master" )
+			{
+				$prevmastersession = str_replace("master_",$this->session->data['customer_id']."_",$this->session->data['mastersession']);
+					foreach( $productsincart as $item)
+					{
+						$this->db->query("UPDATE ".DB_PREFIX."temp_cart SET User_Master_Session='".$prevmastersession."' where User_Master_Session='".$this->session->data['mastersession']."' and ProductId=".$item['product_id']);
+					}
+				$this->session->data['mastersession'] = $prevmastersession;
+			}
+			else
+				$prevmastersession = $this->session->data['mastersession'];
+			
+			
+			foreach( $productsincart as $item)
+			{
+			//echo $item['cart_id']." Quantity:".$item['quantity'];	
+			
+			// check whether the product under this session already there in the tempcart table
+			
+			if( $prdide==$item['product_id'])
+			{
+				
+			$qry = $this->db->query("SELECT Quantity FROM oc_temp_cart where ProductId=".$item['product_id']." and User_Master_Session='".$prevmastersession."'" );
+			
+			
+			if( $qry->num_rows>0)
+			{
+				if($add_remove=='add')
+					$this->db->query("UPDATE ".DB_PREFIX."temp_cart SET Quantity=".(($qry->row['Quantity'])+$quantity)." where ProductId=".$item['product_id']." and User_Master_Session='".$prevmastersession."'" );
+				else if($add_remove=='remove')
+					$this->db->query("DELETE FROM ".DB_PREFIX."temp_cart where ProductId=".$item['product_id']." and User_Master_Session='".$prevmastersession."'" );
+		else if($add_remove=='edit')
+		{
+			
+			//echo $qry->row['Quantity'].":".$quantity; exit;
+			
+			if($quantity<1)
+			$this->db->query("DELETE FROM ".DB_PREFIX."temp_cart where ProductId=".$item['product_id']." and User_Master_Session='".$prevmastersession."'" );
+			else
+			{	
+			
+				$editquantity=$quantity;
+				$prdqntyincart=$qry->row['Quantity'];
+			
+			
+				if($qry->row['Quantity']==$quantity) {  }
+				else if( $prdqntyincart>$editquantity)
+					{
+						$diff = $prdqntyincart-$editquantity;
+					$this->db->query("UPDATE ".DB_PREFIX."temp_cart SET Quantity=Quantity-$diff  where ProductId=".$item['product_id']." and User_Master_Session='".$prevmastersession."'" );
+				}
+				else if( $prdqntyincart<$editquantity)
+				{
+					
+					$diff = $editquantity-$prdqntyincart;
+				//	echo $diff; exit; 
+					$this->db->query("UPDATE ".DB_PREFIX."temp_cart SET Quantity=Quantity+$diff where ProductId=".$item['product_id']." and User_Master_Session='".$prevmastersession."'" );
+				}
+				
+			}
+				}
+				
+				if( $this->db->countAffected()>0)
+				{
+					
+					//remove the quantity of products from the product table
+					
+					$query = $this->db->query("SELECT Quantity FROM " . DB_PREFIX . "product where product_id=".$item['product_id']);
+					if($add_remove=='add')
+					$this->db->query("UPDATE ".DB_PREFIX."product SET quantity=".($query->row['Quantity']-$quantity)." where product_id=".$item['product_id']);
+					elseif($add_remove=='remove')
+					$this->db->query("UPDATE ".DB_PREFIX."product SET quantity=".($query->row['Quantity']+$quantity)." where product_id=".$item['product_id']);
+
+		else if($add_remove=='edit')
+			{
+				if($quantity<1)
+				{
+					//get the remaining items in the product table
+					$prdsremaining = $this->getProduct($item['product_id']);
+					
+					$this->db->query("UPDATE ".DB_PREFIX."product SET quantity=".($query->row['Quantity']+$prdsremaining->row['quantity'])." where product_id=".$item['product_id']);	
+				}
+				else
+				{
+					//$diff = $qry->row['Quantity']-$quantity
+					
+					$editquantity=$quantity;
+					$prdqntyincart=$qry->row['Quantity'];
+				
+					
+					if( $prdqntyincart ==$editquantity) {  }
+					else if( $prdqntyincart>$editquantity)
+					{
+						$diff = $prdqntyincart-$editquantity;
+						
+						$this->db->query("UPDATE ".DB_PREFIX."product SET quantity=quantity+$diff where product_id=".$item['product_id']);		
+					}
+					else
+					{
+						$diff = $editquantity-$prdqntyincart;
+						$this->db->query("UPDATE ".DB_PREFIX."product SET quantity=quantity-$diff where product_id=".$item['product_id']);	
+					}
+				}
+				
+			}
+					
+					if(  $this->db->countAffected()>0 )
+						return "1";	
+					else
+					{
+						$affectedQuant = $this->db->query("SELECT Quantity FROM " . DB_PREFIX . "temp_cart where ProductId=".$item['product_id']." and User_Master_Session='".$prevmastersession."'");
+						
+						if( $affectedQuant->row['Quantity']>1 )
+							$this->db->query("UPDATE ".DB_PREFIX."temp_cart SET Quantity=".(($qry->row['Quantity'])-$quantity)." where ProductId=".$item['product_id']." and User_Master_Session='".$prevmastersession."'");
+						else
+							$this->db->query("DELETE * FROM " . DB_PREFIX . "temp_cart where ProductId=".$item['product_id']." and User_Master_Session='".$prevmastersession."'");
+					
+						return "0";
+						$item['quantity'] = $item['quantity']-$quantity;
+					}
+				
+				}
+				else
+				{
+					$item['quantity'] = $item['quantity']-$quantity;
+					return "0";
+				}
+			}
+				else
+				{
+				// $this->db->escape(
+				$this->db->query("INSERT INTO " . DB_PREFIX . "temp_cart SET User_Master_Session='".$prevmastersession."', ProductId=".$item['product_id'].", Quantity=".$item['quantity'].", ExpireBy='".(time()+1800)."',AddedOn='".date('Y-m-d')."'");
+				$tempId=$this->db->getLastId();
+				
+				if($tempId>0)
+				{
+					//remove the quantity of products from the product table
+					
+					$qry = $this->db->query("SELECT Quantity FROM " . DB_PREFIX . "product where product_id=".$item['product_id']);
+					
+					
+					$this->db->query("UPDATE ".DB_PREFIX."product SET quantity=".($qry->row['Quantity']-$quantity)." where product_id=".$item['product_id']);
+					if(  $this->db->countAffected()>0 )
+					{
+						return "1";	
+					}
+					else
+					{
+						$affectedQuant = $this->db->query("SELECT Quantity FROM " . DB_PREFIX . "temp_cart where ProductId=".$item['product_id']);
+						
+						if( $affectedQuant->row['Quantity']>1 )
+							$this->db->query("UPDATE ".DB_PREFIX."temp_cart SET Quantity=".(($affectedQuant->row['Quantity'])-$quantity)." where ProductId=".$item['product_id']." and User_Master_Session='".$prevmastersession."'");
+						else
+							$this->db->query("DELETE * FROM " . DB_PREFIX . "temp_cart where ProductId=".$item['product_id']." and User_Master_Session='".$prevmastersession."'");
+					
+						return "0";
+						$item['quantity'] = $item['quantity']-$quantity;
+					}
+				}
+				else
+				{
+					$item['quantity'] = $item['quantity']-$quantity;
+					return "0";
+				}
+			}
+			}
+		} //foreach ends here
+			
+			
+			
+		}
+	elseif($master_exists=="no")
+	{
+		
+		
+		//now insert the cart info into the oc_temp_cart 
+		
+		foreach( $productsincart as $item)
+		{
+			//echo $item['cart_id']." Quantity:".$item['quantity'];	
+			
+			// check whether the product under this session already there in the tempcart table
+			
+			$qry = $this->db->query("SELECT Quantity FROM oc_temp_cart where ProductId=".$item['product_id']." and User_Master_Session='".$this->session->data['mastersession']."'" );
+			$prevmastersession=$this->session->data['mastersession'];
+			
+			if( $qry->num_rows>0)
+			{
+				if($add_remove=='add')
+					$this->db->query("UPDATE ".DB_PREFIX."temp_cart SET Quantity=".(($qry->row['Quantity'])+$quantity)." where ProductId=".$item['product_id']." and User_Master_Session='".$prevmastersession."'" );
+				else if($add_remove=='remove')
+					$this->db->query("DELETE FROM ".DB_PREFIX."temp_cart where ProductId=".$item['product_id']." and User_Master_Session='".$prevmastersession."'" );
+				else if($add_remove=='edit')
+					{
+						
+			
+			//echo $qry->row['Quantity'].":".$quantity; exit;
+			
+			if($quantity<1)
+			$this->db->query("DELETE FROM ".DB_PREFIX."temp_cart where ProductId=".$item['product_id']." and User_Master_Session='".$prevmastersession."'" );
+			else
+			{	
+			
+				$editquantity=$quantity;
+				$prdqntyincart=$qry->row['Quantity'];
+			
+			
+				if($qry->row['Quantity']==$quantity) {  }
+				else if( $prdqntyincart>$editquantity)
+					{
+						$diff = $prdqntyincart-$editquantity;
+					$this->db->query("UPDATE ".DB_PREFIX."temp_cart SET Quantity=Quantity-$diff  where ProductId=".$item['product_id']." and User_Master_Session='".$prevmastersession."'" );
+				}
+				else if( $prdqntyincart<$editquantity)
+				{
+					
+					$diff = $editquantity-$prdqntyincart;
+				//	echo $diff; exit; 
+					$this->db->query("UPDATE ".DB_PREFIX."temp_cart SET Quantity=Quantity+$diff where ProductId=".$item['product_id']." and User_Master_Session='".$prevmastersession."'" );
+				}
+				
+			}
+				
+					}
+					
+				//$this->db->query("UPDATE ".DB_PREFIX."temp_cart SET Quantity=".(($qry->row['Quantity'])+$quantity)." where ProductId=".$item['product_id']);
+				
+				if( $this->db->countAffected()>0)
+				{
+					//remove the quantity of products from the product table
+					
+					$query = $this->db->query("SELECT Quantity FROM " . DB_PREFIX . "product where product_id=".$item['product_id']);
+					
+					if($add_remove=='add')
+					$this->db->query("UPDATE ".DB_PREFIX."product SET quantity=".($query->row['Quantity']-$quantity)." where product_id=".$item['product_id']);
+					elseif($add_remove=='remove')
+					$this->db->query("UPDATE ".DB_PREFIX."product SET quantity=".($query->row['Quantity']+$quantity)." where product_id=".$item['product_id']);
+					else if($add_remove=='edit')
+					{
+				if($quantity<1)
+				{
+					//get the remaining items in the product table
+					$prdsremaining = $this->getProduct($item['product_id']);
+					
+					$this->db->query("UPDATE ".DB_PREFIX."product SET quantity=".($query->row['Quantity']+$prdsremaining->row['quantity'])." where product_id=".$item['product_id']);	
+				}
+				else
+				{
+					//$diff = $qry->row['Quantity']-$quantity
+					
+					$editquantity=$quantity;
+					$prdqntyincart=$qry->row['Quantity'];
+				
+					
+					if( $prdqntyincart ==$editquantity) {  }
+					else if( $prdqntyincart>$editquantity)
+					{
+						$diff = $prdqntyincart-$editquantity;
+						
+						$this->db->query("UPDATE ".DB_PREFIX."product SET quantity=quantity+$diff where product_id=".$item['product_id']);		
+					}
+					else
+					{
+						$diff = $editquantity-$prdqntyincart;
+						$this->db->query("UPDATE ".DB_PREFIX."product SET quantity=quantity-$diff where product_id=".$item['product_id']);	
+					}
+				}
+				
+			}
+					
+					//$this->db->query("UPDATE ".DB_PREFIX."product SET quantity=".($query->row['Quantity']-$quantity)." where product_id=".$item['product_id']);
+					if(  $this->db->countAffected()>0 )
+						return "1";	
+					else
+					{
+						$affectedQuant = $this->db->query("SELECT Quantity FROM " . DB_PREFIX . "temp_cart where ProductId=".$item['product_id']." and User_Master_Session='".$this->session->data['mastersession']."'");
+						
+						if( $affectedQuant->row['Quantity']>1 )
+							$this->db->query("UPDATE ".DB_PREFIX."temp_cart SET Quantity=".(($qry->row['Quantity'])-$quantity)." where ProductId=".$item['product_id']." and User_Master_Session='".$this->session->data['mastersession']."'");
+						else
+							$this->db->query("DELETE * FROM " . DB_PREFIX . "temp_cart where ProductId=".$item['product_id']." and User_Master_Session='".$this->session->data['mastersession']."'");
+					
+						return "0";
+						$item['quantity'] = $item['quantity']-$quantity;
+					}
+				
+				}
+				else
+				{
+					$item['quantity'] = $item['quantity']-$quantity;
+					return "0";
+				}
+			}
+			else
+			{
+				
+				
+				// $this->db->escape(
+				$this->db->query("INSERT INTO " . DB_PREFIX . "temp_cart SET User_Master_Session='".$this->session->data['mastersession']."', ProductId=".$item['product_id'].", Quantity=".$item['quantity'].", ExpireBy='".(time()+1800)."',AddedOn='".date('Y-m-d')."'");
+				$tempId=$this->db->getLastId();
+				
+				if($tempId>0)
+				{
+					//remove the quantity of products from the product table
+					
+					$qry = $this->db->query("SELECT Quantity FROM " . DB_PREFIX . "product where product_id=".$item['product_id']);
+					
+					
+					$this->db->query("UPDATE ".DB_PREFIX."product SET quantity=".($qry->row['Quantity']-$quantity)." where product_id=".$item['product_id']);
+					if(  $this->db->countAffected()>0 )
+					{
+						return "1";	
+					}
+					else
+					{
+						$affectedQuant = $this->db->query("SELECT Quantity FROM " . DB_PREFIX . "temp_cart where ProductId=".$item['product_id']);
+						
+						if( $affectedQuant->row['Quantity']>1 )
+							$this->db->query("UPDATE ".DB_PREFIX."temp_cart SET Quantity=".(($affectedQuant->row['Quantity'])-$quantity)." where ProductId=".$item['product_id']." and User_Master_Session='".$this->session->data['mastersession']."'");
+						else
+							$this->db->query("DELETE * FROM " . DB_PREFIX . "temp_cart where ProductId=".$item['product_id']." and User_Master_Session='".$this->session->data['mastersession']."'");
+					
+						return "0";
+						$item['quantity'] = $item['quantity']-$quantity;
+					}
+				}
+				else
+				{
+					$item['quantity'] = $item['quantity']-$quantity;
+					return "0";
+				}
+			
+			}
+		}
+		
+	}
+
+
+	
+	
+	
+}
+
+//updateQuantity ends here
 
 }

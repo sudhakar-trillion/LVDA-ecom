@@ -7,4 +7,6 @@ $_['text_captcha'] = 'Captcha';
 $_['entry_captcha'] = 'Captcha';
 
 // Error
-$_['error_captcha'] = 'Verification code does not match the image!';
+//$_['error_captcha'] = 'Captcha code does not match the image!';
+
+$_['error_captcha'] = 'Captcha code does not match!';

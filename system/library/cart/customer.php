@@ -79,6 +79,7 @@ class Customer {
 	}
 
 	public function logout() {
+		
 		unset($this->session->data['customer_id']);
 
 		$this->customer_id = '';

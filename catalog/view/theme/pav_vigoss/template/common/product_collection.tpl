@@ -51,7 +51,7 @@
 		<?php } ?>
 
 		<div class="<?PHP if($cnt==4){?>border-right<?PHP $cnt=0; } ?> col-lg-<?php echo $span;?> col-md-<?php echo $span;?> col-sm-<?php echo $span;?> col-xs-<?php echo $mini;?> product-col">	<!-- product-col class has been removed  -->
-			<?php require( ThemeControlHelper::getLayoutPath( 'common/product/'.$listingConfig['product_layout'].'.tpl' ) );  ?>   	
+			<?php  require( ThemeControlHelper::getLayoutPath( 'common/product/'.$listingConfig['product_layout'].'.tpl' ) );  ?>   	
 		</div>
 		
 		<?php if( $i%$cols == 0 || $i==count($products) ) { ?>

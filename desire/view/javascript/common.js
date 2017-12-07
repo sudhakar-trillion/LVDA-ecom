@@ -66,6 +66,7 @@ $(document).ready(function() {
 
 	// Menu button
 	$('#button-menu').on('click', function() {
+	
 		// Checks if the left column is active or not.
 		if ($('#column-left').hasClass('active')) {
 			localStorage.setItem('column-left', '');
@@ -76,6 +77,9 @@ $(document).ready(function() {
 
 			$('#menu > li > ul').removeClass('in collapse');
 			$('#menu > li > ul').removeAttr('style');
+			$('#column-left').css({"margin-left":"-100%","width":"0px"});
+			$("#content").css({"margin-left":"0px"});
+			
 		} else {
 			localStorage.setItem('column-left', 'active');
 
@@ -86,6 +90,8 @@ $(document).ready(function() {
 			// Add the slide down to open menu items
 			$('#menu li.open').has('ul').children('ul').addClass('collapse in');
 			$('#menu li').not('.open').has('ul').children('ul').addClass('collapse');
+			$('#column-left').css({"margin-left":"0%","width":"211px"});
+			$("#content").css({"margin-left":"235px"});
 		}
 	});
 

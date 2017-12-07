@@ -29,6 +29,10 @@
     <?php $class = 'col-sm-12'; ?>
     <?php } ?>
     <div id="content" class="col-sm-12 " style="margin:auto; float:none;  margin-top:40px;"><?php echo $content_top; ?>
+    <?PHP 
+    	echo $EditQuantExceeds;
+    ?>
+    
       <h1 class="sh-title"><?php echo $heading_title; ?>
        <!-- <?php if ($weight) { ?>
         &nbsp;(<?php echo $weight; ?>)
@@ -57,6 +61,11 @@
                   <?php if (!$product['stock']) { ?>
                   <span class="text-danger">***</span>
                   <?php } ?>
+                  <?PHP
+                  if($productQuantinstock==$product['cart_id']){ ?>
+                  <span class="text-danger">****</span>
+                  <?php } ?>
+                  
                   <?php if ($product['option']) { ?>
                   <?php foreach ($product['option'] as $option) { ?>
                   <br />

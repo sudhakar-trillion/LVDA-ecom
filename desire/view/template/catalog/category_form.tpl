@@ -57,19 +57,22 @@
                   </div>
                   <div class="form-group required">
                     <label class="col-sm-2 control-label" for="input-meta-title<?php echo $language['language_id']; ?>"><?php echo $entry_meta_title; ?></label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-4">
                       <input type="text" name="category_description[<?php echo $language['language_id']; ?>][meta_title]" value="<?php echo isset($category_description[$language['language_id']]) ? $category_description[$language['language_id']]['meta_title'] : ''; ?>" placeholder="<?php echo $entry_meta_title; ?>" id="input-meta-title<?php echo $language['language_id']; ?>" class="form-control" />
                       <?php if (isset($error_meta_title[$language['language_id']])) { ?>
                       <div class="text-danger"><?php echo $error_meta_title[$language['language_id']]; ?></div>
                       <?php } ?>
                     </div>
-                  </div>
-                  <div class="form-group">
+                    
+                    
                     <label class="col-sm-2 control-label" for="input-meta-description<?php echo $language['language_id']; ?>"><?php echo $entry_meta_description; ?></label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-4">
                       <textarea name="category_description[<?php echo $language['language_id']; ?>][meta_description]" rows="5" placeholder="<?php echo $entry_meta_description; ?>" id="input-meta-description<?php echo $language['language_id']; ?>" class="form-control"><?php echo isset($category_description[$language['language_id']]) ? $category_description[$language['language_id']]['meta_description'] : ''; ?></textarea>
                     </div>
+                    
+                    
                   </div>
+                 
                   <div class="form-group">
                     <label class="col-sm-2 control-label" for="input-meta-keyword<?php echo $language['language_id']; ?>"><?php echo $entry_meta_keyword; ?></label>
                     <div class="col-sm-10">
@@ -90,9 +93,9 @@
               </div>
               <div class="form-group">
                 <label class="col-sm-2 control-label" for="input-filter"><span data-toggle="tooltip" title="<?php echo $help_filter; ?>"><?php echo $entry_filter; ?></span></label>
-                <div class="col-sm-10">
+                <div class="col-sm-4">
                   <input type="text" name="filter" value="" placeholder="<?php echo $entry_filter; ?>" id="input-filter" class="form-control" />
-                  <div id="category-filter" class="well well-sm" style="height: 150px; overflow: auto;">
+                  <div id="category-filter" class="well well-sm" style="height: 75px; overflow: auto;">
                     <?php foreach ($category_filters as $category_filter) { ?>
                     <div id="category-filter<?php echo $category_filter['filter_id']; ?>"><i class="fa fa-minus-circle"></i> <?php echo $category_filter['name']; ?>
                       <input type="hidden" name="category_filter[]" value="<?php echo $category_filter['filter_id']; ?>" />
@@ -100,11 +103,12 @@
                     <?php } ?>
                   </div>
                 </div>
-              </div>
-              <div class="form-group">
+                
+                
+                
                 <label class="col-sm-2 control-label"><?php echo $entry_store; ?></label>
-                <div class="col-sm-10">
-                  <div class="well well-sm" style="height: 150px; overflow: auto;">
+                <div class="col-sm-4">
+                  <div class="well well-sm" style="height:120px; overflow: auto;">
                     <div class="checkbox">
                       <label>
                         <?php if (in_array(0, $category_store)) { ?>
@@ -131,25 +135,28 @@
                     <?php } ?>
                   </div>
                 </div>
+                
+                
               </div>
+            
               <div class="form-group">
                 <label class="col-sm-2 control-label" for="input-keyword"><span data-toggle="tooltip" title="<?php echo $help_keyword; ?>"><?php echo $entry_keyword; ?></span></label>
-                <div class="col-sm-10">
+                <div class="col-sm-4">
                   <input type="text" name="keyword" value="<?php echo $keyword; ?>" placeholder="<?php echo $entry_keyword; ?>" id="input-keyword" class="form-control" />
                   <?php if ($error_keyword) { ?>
                   <div class="text-danger"><?php echo $error_keyword; ?></div>
                   <?php } ?>                
                 </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label"><?php echo $entry_image; ?></label>
-                <div class="col-sm-10"><a href="" id="thumb-image" data-toggle="image" class="img-thumbnail"><img src="<?php echo $thumb; ?>" alt="" title="" data-placeholder="<?php echo $placeholder; ?>" /></a>
+                
+                 <label class="col-sm-2 control-label"><?php echo $entry_image; ?></label>
+                
+                <div class="col-sm-2"><a href="" id="thumb-image" data-toggle="image" class="img-thumbnail"><img src="<?php echo $thumb; ?>" alt="" title="" data-placeholder="<?php echo $placeholder; ?>" /></a>
                   <input type="hidden" name="image" value="<?php echo $image; ?>" id="input-image" />
                 </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label" for="input-top"><span data-toggle="tooltip" title="<?php echo $help_top; ?>"><?php echo $entry_top; ?></span></label>
-                <div class="col-sm-10">
+                
+                 <label class="col-sm-1 control-label" for="input-top"><span data-toggle="tooltip" title="<?php echo $help_top; ?>"><?php echo $entry_top; ?></span></label>
+                
+                <div class="col-sm-1">
                   <div class="checkbox">
                     <label>
                       <?php if ($top) { ?>
@@ -159,20 +166,23 @@
                       <?php } ?>
                       &nbsp; </label>
                   </div>
-                </div>
+                </div> 
+                
               </div>
+              
               <div class="form-group">
                 <label class="col-sm-2 control-label" for="input-column"><span data-toggle="tooltip" title="<?php echo $help_column; ?>"><?php echo $entry_column; ?></span></label>
-                <div class="col-sm-10">
+                <div class="col-sm-4">
                   <input type="text" name="column" value="<?php echo $column; ?>" placeholder="<?php echo $entry_column; ?>" id="input-column" class="form-control" />
                 </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label" for="input-sort-order"><?php echo $entry_sort_order; ?></label>
-                <div class="col-sm-10">
+                
+                 <label class="col-sm-2 control-label" for="input-sort-order"><?php echo $entry_sort_order; ?></label>
+                <div class="col-sm-4">
                   <input type="text" name="sort_order" value="<?php echo $sort_order; ?>" placeholder="<?php echo $entry_sort_order; ?>" id="input-sort-order" class="form-control" />
                 </div>
+                
               </div>
+             
               <div class="form-group">
                 <label class="col-sm-2 control-label" for="input-status"><?php echo $entry_status; ?></label>
                 <div class="col-sm-10">

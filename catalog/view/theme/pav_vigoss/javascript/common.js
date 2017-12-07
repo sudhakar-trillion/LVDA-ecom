@@ -247,11 +247,14 @@ $(document).ready(function()
 
 // 3. addtocart, wishlish, compare
 var cart = {
+	
   'add': function(product_id, quantity) {
+	  
     $.ajax({
       url: 'index.php?route=checkout/cart/add',
       type: 'post',
       data: 'product_id=' + product_id + '&quantity=' + (typeof(quantity) != 'undefined' ? quantity : 1),
+	
       dataType: 'json',
       beforeSend: function() {
         $('#cart > button').button('loading');
@@ -277,12 +280,26 @@ var cart = {
           // Pavo 2.2 end edit
 
           $('html, body').animate({ scrollTop: 0 }, 'slow');
-
+		 
           $('#cart > ul').load('index.php?route=common/cart/info ul li');
         }
+		else
+		{
+			// $('#notification').html('<div class="alert alert-success">' + json['success'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+			
+			var errmsg = json['error']['option'];
+			$.each(errmsg,function(ind,val)
+			{ 
+				$('#notification').html('<div class="alert alert-danger">' + val + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+				 $('html, body').animate({ scrollTop: 0 }, 'slow');
+				
+			});
+			
+			
+		}
       },
       error: function(xhr, ajaxOptions, thrownError) {
-        alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+        alert('hey'+thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
       }
     });
   },
@@ -389,7 +406,9 @@ var compare = {
 
         if (json['success']) {
           $('#notification').html('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
-
+			
+			
+			
           $('#compare-total').html(json['total']);
 
           $('#compare-total', window.parent.document).html(json['total']);
@@ -438,7 +457,10 @@ $(".reviewsection").on('click',function()
 		}
 	
 });
-	
+
+
 	
 });
+
+
 

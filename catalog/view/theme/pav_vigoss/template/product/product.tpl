@@ -89,7 +89,10 @@
   
   -->
 <div class="container">
-  <div class="row"><?php echo $column_left; ?>
+  <div class="row">
+  
+ <?php #echo $column_left; ?> 
+  <!--
     <?php if ($column_left && $column_right) { ?>
     <?php $class = 'col-md-6'; ?>
     <?php } elseif ($column_left || $column_right) { ?>
@@ -97,7 +100,8 @@
     <?php } else { ?>
     <?php $class = 'col-md-12'; ?>
     <?php } ?>
-    <div id="content" class="<?php echo $class; ?>"><?php echo $content_top; ?>
+-->
+    <div id="content" class="col-md-12"><?php echo $content_top; ?>
       <div class="product-info">
         <div class="row">
           <?php if ($column_left || $column_right) { ?>
@@ -115,49 +119,51 @@
           <?php } ?>
           <div class="<?php echo $class; ?>">
           
-            <h1 class="heading-left"><?php echo $heading_title; ?></h1>
-        
-            <?php if ($review_status) { ?>
+           <?php if ($review_status) { ?>
             <div class="rating">
               <p>
                 <?php for ($i = 1; $i <= 5; $i++) { ?>
                 <?php if ($rating < $i) { ?>
                 <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-1x"></i></span>
                 <?php } else { ?>
-                <span class="fa fa-stack"><i class="fa fa-star fa-stack-1x"></i><i class="fa fa-star-o fa-stack-1x"></i></span>
+                <span class="fa fa-stack"><i class="fa fa-star fa-stack-1x"></i><!--<i class="fa fa-star-o fa-stack-1x"></i>--></span>
                 <?php } ?>
                 <?php } ?>
               
               <!--  <a href="" onclick="$('a[href=\'#tab-review\']').trigger('click'); return false;"><?php echo $reviews; ?></a> / <a href="" onclick="$('a[href=\'#tab-review\']').trigger('click'); return false;"  ><?php echo $text_write; ?></a>-->
               
-                <a style="cursor:pointer" class='view-reviews'><?php echo $reviews; ?></a> 
-                / 
-                <a href="" onclick="return false;" class='writereview'  ><?php echo $text_write; ?></a>
+               
+                <a href="" onclick="return false;" ><?php echo " Voted by ".str_replace("reviews","",$reviews)." Customers"; ?></a>
               
               </p>
               
             </div>
-            <?php } ?>
-
-             <?php if ($price) { ?>
+            <?php } ?>  
+          
+          
+            <h1 class="heading-left"><?php echo $heading_title; ?></h1>
+        
+        <!-- Price of the product -->
+        
+          <?php if ($price) { ?>
               <div class="price detail">
                   <ul class="list-unstyled">
                       <?php if (!$special) { ?>
                           <li>
-                              <span class="price-new"> <?php echo $price; ?> </span>
+                              <span class="price-new"> <?php echo str_replace("RS","Rs",$price); ?> </span>
                           </li>
                       <?php } else { ?>
 
-                          <li> <span class="price-new"> <?php echo $special; ?> </span> <span class="price-old"><?php echo $price; ?></span> </li>
+                          <li> <span class="price-new"> <?php echo str_replace("RS","Rs",$special); ?> </span> <span class="price-old"><?php echo str_replace("RS","Rs",$price); ?></span> </li>
                       <?php } ?>
                   </ul>
               </div>
           <?php } ?>
     
           <ul class="list-unstyled">
-              <?php if ($tax) { ?>
+             <!-- <?php if ($tax) { ?>
                   <li><?php echo $text_tax; ?> <?php echo $tax; ?></li>
-              <?php } ?>
+              <?php } ?>-->
 
               <?php if ($discounts) { ?>
                   <li>
@@ -168,10 +174,9 @@
               <?php } ?>
           </ul>
           
-                     
-          <ul class="list-unstyled">
+           <ul class="list-unstyled">
           
-          <li><span class="check-box text-primary"><i class="zmdi zmdi-check zmdi-hc-fw"></i></span><?php echo $text_stock; ?><?php if ($AvailQuantity > 1) { echo $stock;} else echo $OutOfStock; ?></li>
+          <li><span class="check-box text-primary"><i class="zmdi zmdi-check zmdi-hc-fw"></i></span><?php echo $text_stock; ?><?php if ($AvailQuantity > 1) { echo $stock;} else echo "<b>".$OutOfStock."</b>"; ?></li>
           
           
 <!--              <?php if ($stock) { ?>
@@ -188,11 +193,16 @@
                   <li><span class="check-box text-primary"><i class="zmdi zmdi-check zmdi-hc-fw"></i></span><?php echo $text_points; ?> <?php echo $points; ?></li>
               <?php } ?>
           </ul>
-         
         
+        <!-- product description -->
+        
+ 		<div class="prdct-description">
+        	<?php echo $description; ?>
+		</div> 
+           
             <div id="product">
               <?php if ($options) { ?>
-              <hr>
+            
               <h3><?php echo $text_option; ?></h3>
               <?php foreach ($options as $option) { ?>
               <?php if ($option['type'] == 'select') { ?>
@@ -213,7 +223,7 @@
               <?php if ($option['type'] == 'radio') { ?>
               <div class="form-group<?php echo ($option['required'] ? ' required' : ''); ?> form-group-v2">
                 <label class="control-label"><?php echo $option['name']; ?></label>
-                <div id="input-option<?php echo $option['product_option_id']; ?>">
+                <div id="input-option<?php echo $option['product_option_id']; ?>" class="radio-options">
                   <?php foreach ($option['product_option_value'] as $option_value) { ?>
                   <div class="radio">
                     <label>
@@ -328,48 +338,73 @@
                 <div class="help-block" id="recurring-description"></div>
               </div>
               <?php } ?>
-                          
+                           <input type="hidden" name="product_id" id="product_id" value="<?php echo $product_id; ?>" />
+            <?php 
+               if ($AvailQuantity > 1) 
+               {  
+               ?>
               <div class="product-buttons-wrap">
-                <div class="product-qyt-action space-margin-tb-20 clearfix">
+                <div class="product-qyt-action  clearfix pull-left">
                     <div class="quantity-title qty pull-left"><?php echo $entry_qty; ?>:</div>
                     <div class="quantity-adder pull-left">
                         <div class="quantity-number pull-left">
                             <input type="text" name="quantity" value="<?php echo $minimum; ?>" size="2" id="input-quantity" class="form-control" />
                         </div>
                         <div class="quantity-wrapper pull-left">
-                        <span class="<?PHP if($AvailQuantity>2) {?>add-up <?PHP } ?>add-action">
+                        <span class="<?PHP if($AvailQuantity>1) {?>add-up <?PHP } ?>add-action">
                             <i class="fa fa-plus"></i>
                         </span>
-                        <span class="<?PHP if($AvailQuantity>2) {?> add-down <?PHP } ?> add-action">
+                        <span class="<?PHP if($AvailQuantity>1) {?> add-down <?PHP } ?> add-action">
                             <i class="fa fa-minus"></i>
                         </span>
                         </div>
                        
                     </div>               
                 </div>
-           
-                <input type="hidden" name="product_id" id="product_id" value="<?php echo $product_id; ?>" />
-                <div class="clearfix">
-                <div class="pull-left space-right-15">
-                    <button type="button" id="<?PHP if($AvailQuantity>2) {?>button-cart<?PHP }else echo 'out-of-stock' ?>" data-loading-text="<?php echo $text_loading; ?>" class="btn btn-primary">
-                      <i class="zmdi <?PHP if($AvailQuantity>2) {?> zmdi-plus<?PHP } ?> zmdi-hc-fw space-right-5"></i><span><?php if($AvailQuantity>2) { echo $button_cart; } else echo 'Out of Stock'; ?></span>
+
+                 
+                <div class="pull-left ">
+                    <button type="button" id="<?PHP if($AvailQuantity>1) {?>button-cart<?PHP }else echo 'out-of-stock' ?>" data-loading-text="<?php echo $text_loading; ?>" class="btn btn-primary">
+                      <i class="zmdi <?PHP if($AvailQuantity>1) {?> zmdi-plus<?PHP } ?> zmdi-hc-fw space-right-5"></i><span><?php if($AvailQuantity>1) { echo $button_cart; } else echo 'Out of Stock'; ?></span>
                     </button>
                 </div> 
+                
                 <div class="pull-left space-right-15">
                     <a data-toggle="tooltip" class="btn btn-sm btn-inverse-light" title="<?php echo $button_compare; ?>" onclick="compare.add
                       ('<?php echo $product_id; ?>');"><i class="zmdi zmdi-tune zmdi-hc-fw"></i></a>
                 </div>
+                
                 <div class="pull-left">  
                     <a data-toggle="tooltip" class="btn btn-sm btn-inverse-light" title="<?php echo $button_wishlist; ?>" onclick="wishlist.add
                       ('<?php echo $product_id; ?>');"><i class="zmdi zmdi-favorite-outline zmdi-hc-fw"></i></a>
                 </div>
-               
-              </div>  
+                  <div class="clearfix"></div>
+                <div class="notify-msg"></div>
+                 
+               </div>
+             
+              <?PHP
+              }
+              else
+              {
+              	echo "<p class='notify-restock'>".$notify_restock."</p>";
+                ?>
+                 
+
+                 <div>
+                <input typer="text" name="notify_restorck" id="notify_restorck" placeholder="Enter Email" class="notify-element" />
+                <input type="button" name="notify_restorck_btn" id="notify_restorck_btn" value="Notify" />
+                <div class="clearfix"></div>   
+                </div>
+                <span class="notify-msg"></span>
+                <?PHP
+              }
+              ?>  
               <?php if ($minimum > 1) { ?>
               <div class="alert alert-info space-top-10"><i class="fa fa-info-circle"></i> <?php echo $text_minimum; ?></div>
               <?php } ?>
-              </div>
-               <hr> 
+
+         
               <!-- AddThis Button BEGIN -->
 				
                 <!--
@@ -380,12 +415,56 @@
 	            <!-- AddThis Button END -->
               </div>
      
+          <div>
+          
+          
+          <div class="accordion collapse-right space-margin-tb-60 prdct-reviews-accordion">
+        <div id="accordion-v5">
+               
+                
+                 <?php if ($review_status) { ?>
+                 <div class="panel panel-default " id="writereview">
+                    <div class="panel-heading">
+                   <div>
+                    <span class="pull-right customer-review-writing" data-toggle="modal" data-target="#ReviewForm"><?PHP echo $text_write; ?></span>
+	               </div>
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion-v5" class="collapsed reviewsection" href="#collapse-v5-tab_review">
+                                <h3>Read Reviews <i class="fa fa-caret-down reviewcaret"></i></h3>
+                            </a>
+                        </h4>
+                         
+                       
+                    </div>
+                    <div id="collapse-v5-tab_review" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="tab-pane" id="tab-review">
+                            <div id="review"></div>
+                             
+                            </div>
+                        </div>  
+                    </div>        
+                </div>
+                 <?php  } ?>
+                  
+
+        </div>
+</div>
           
           </div>
+          
+          
+          </div>
+          
+           
         </div>
       </div>
 
-   <?php require( ThemeControlHelper::getLayoutPath( 'product/info/'.$layout_pinfo.'.tpl' ) );  ?>
+ 
+
+
+
+   <?php //require( ThemeControlHelper::getLayoutPath( 'product/info/'.$layout_pinfo.'.tpl' ) );  ?>
    
     <?PHP
 	if( $crosssaleproducts=='0')
@@ -403,295 +482,42 @@
     }
     ?>
     <?php echo $column_right; ?></div>
+    
+<div class="shopalzo-mis-widgets">    
 
 <?PHP
 	if( $crosssaleproducts!='0')
-    {
-    ?>
-     <h1 class="mostviewed">Bought Together</h1>
-     <div class="products-block most-v product-recently-viewed">
-      		<div class="owl-carousel owl-theme">
-            
-            
-            <?PHP
-                foreach( $crosssaleproducts as $key=>$info)
-                {
-               
-               	//echo "<pre>";
-                //print_r($info['prddetails']);
-
-                ?>
-                <div class="item mostviewed_prdcts" > 
-        
-        <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12   last first">			
-			
-<div class="product-block item-default" itemscope="">
-
-			 <div class="image">
-		 	<!-- text sale-->
-            <?PHP  $CrosssaleProduct = $info['prddetails']['CrosssaleProduct']; ?>
-
- <input type="checkbox" style="float: right; width:20px" name="addtocrosssale" class="addtocrosssale" crosssaleprice="<?PHP echo $info['prddetails']['SalePrice']?>" value="<?PHP echo $CrosssaleProduct; ?>" <?PHP  if($info['prddetails']['InCart']=="Yes") echo 'checked' ?> />
-
-
- 
-			<a class="img" href="<?PHP echo $info['prddetails']['href'] ?>"><img src="<?PHP echo $info['prddetails']['ProductImage']?>"  class="img-responsive"></a>
-                        
-					</div>
-		
-	<div class="product-meta">
-		<div class="left">
-			<h3 class="name"><a href="<?PHP echo $info['prddetails']['href'] ?>"><?PHP echo $info['prddetails']['name'] ?></a></h3>
-
-            <div class="price" itemscope="" itemprop="offers">
-                     <span class="special-price"><?PHP echo $info['prddetails']['currency']." ".$info['prddetails']['SalePrice'];  ?></span>
-                  
-                    <meta content="" itemprop="priceCurrency">
-            </div>
-                
-                
-					</div>
-
-		<div class="clearfix"></div>
-
-	</div>
-    <div class="clearfix"></div>
-
-</div>
-</div>
-        
-        
-        <div class="clearfix"></div>
-        
-         </div>
-                <?PHP
-                
-                
-                }
-            }
-          
- ?>
-                        
-            </div>
-      </div>
-      
-    <?PHP
-
-    if($upsaleProducts=='0')
-    {
-    
-    }
-    else{
-    ?>
-    <h1 class="mostviewed">You may also be interested in</h1>
-    <div class="products-block most-v product-recently-viewed">
-		 <div class="owl-carousel owl-theme">
-    <?PHP
-    		foreach( $upsaleProducts as $upsale)
-            {
-            ?>
-            <div class="item mostviewed_prdcts" > 
-        
-        <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12   last first">			
-			
-<div class="product-block item-default" itemscope="">
-
-			 <div class="image">
- 
-			<a class="img" href="<?PHP echo $upsale['href'] ?>"><img src="<?PHP echo $upsale['ProductImage']?>"  class="img-responsive"></a>
-                        
-					</div>
-		
-	<div class="product-meta">
-		<div class="left">
-			<h3 class="name"><a href="<?PHP echo $upsale['href'] ?>"><?PHP echo $upsale['name'] ?></a></h3>
-
-            <div class="price" itemscope="" itemprop="offers">
-                     <span class="special-price"><?PHP echo $upsale['currency']." ".$upsale['SalePrice'];  ?></span>
-                  
-                    <meta content="" itemprop="priceCurrency">
-            </div>
-                
-                
-					</div>
-
-		<div class="clearfix"></div>
-
-	</div>
-    <div class="clearfix"></div>
-
-</div>
-</div>
-        
-        
-        <div class="clearfix"></div>
-        
-         </div>
-            <?PHP
-            }
-        	?>
-         </div>
-	</div>
-            <?PHP
-        }
-        
+    	require( ThemeControlHelper::getLayoutPath( 'product/info/cross-sale.tpl' ) ); 
+    if($upsaleProducts!='0')
+        require( ThemeControlHelper::getLayoutPath( 'product/info/up-sale.tpl' ) ); 
     
     ?>
 
+<div class="clearfix"></div>
 
-
- <?php if ($products) {  $heading_title = $text_related; $customcols = 4; ?>
-        <div class="panel panel-center product-related"> <?php require( ThemeControlHelper::getLayoutPath( 'common/products_carousel.tpl' ) );  ?>   </div>
-      <?php } ?>
+ <?php 
+ 	if ($products) 
+ 		{  
+		 $heading_title = $text_related; $customcols = 4; ?>
+        <div class="panel panel-center product-related col-md-6 prd-mrg-btm"> <?php require( ThemeControlHelper::getLayoutPath( 'common/products_carousel.tpl' ) );  ?>   </div>
+<?php 
+		} 
+?>
 
 
     <!-- recently viewed products -->
     
       <?PHP
 	if(sizeof($recentlyviewedProductsInfo)>0)
-    {
+     require( ThemeControlHelper::getLayoutPath( 'product/info/recently-viewed.tpl' ) ); 
     ?>
-            <div class="row most-nopad">
-
-
-      <h1 class="mostviewed">Recently Viewed Products</h1>
-      
-          <div class="products-block most-v product-recently-viewed">
-      <div class="owl-carousel owl-theme">
-      
-      <?PHP
-      foreach($recentlyviewedProductsInfo as $info)
-      {
-     
-      
-      ?>
-      <div class="item mostviewed_prdcts" > 
-        
-        <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12   last first">			
-			
-<div class="product-block item-default" itemscope="">
-
-			 <div class="image">
-		 	<!-- text sale-->
- <?PHP
-      if( $info['special']!=''){?>  <span class="product-label bts"><span class="product-label-special product-label"><span class="special">Sale</span></span></span><?PHP } ?>
-			
-			<a class="img" href="<?PHP echo $info['href'] ?>"><img src="<?PHP echo $info['ProductImage']?>" alt="Zafferano Ultralight Universal Wine Glasses" class="img-responsive"></a>
-
-	
-                
-                
-           <!--     <button type="button" class="btn btn-info btn-sm eye-zoom prd-quick-view" viewprdct="<?PHP echo $info['ProductId']?>" data-toggle="modal" data-target="#Prdquickview"><i class="fa fa-eye"></i></button>-->
- 
-                
-                
-						<!-- quickview-->
-                        
-                        <div class="bottom">
-                      <div class="cart">            
-                <button data-loading-text="Loading..." class="btn btn-danger" type="button" onclick="<?PHP if($info['PrdAvailQuantity']>2){?>cart.add('<?PHP echo $info['ProductId']?>');<?PHP } ?>">
-                <?PHP if($info['PrdAvailQuantity']>2){?> <span>Add to Cart</span><?PHP } else echo 'Out Of Stock'; ?>
-              </button>
-            </div>
-                  
-          <div class="action">           
-
-            <div class="compare">     
-              <button class="btn btn-sm btn-outline-light " type="button" data-toggle="tooltip" data-placement="top" title="" onclick="compare.add('<?PHP echo $info['ProductId']?>');" data-original-title="Compare this Product"><i class="zmdi zmdi-tune zmdi-hc-fw"></i></button> 
-            </div>  
-            <div class="wishlist">
-              <button class="btn btn-sm btn-outline-light " type="button" data-toggle="tooltip" data-placement="top" title="" onclick="wishlist.add('<?PHP echo $info['ProductId']?>');" data-original-title="Add to Wish List"><i class="zmdi zmdi-favorite zmdi-hc-fw"></i></button> 
-            </div> 
-                         <div class="quickview hidden-sm hidden-xs">
-             <!-- <a class="iframe-link btn quick-view btn btn-sm btn-outline-light" data-toggle="tooltip" data-placement="top" href="<?PHP echo $info['config_url'] ?>index.php?route=themecontrol/product&amp;product_id=<?PHP echo $info['ProductId']?>" title="" data-original-title="Quick View"><i class="zmdi zmdi-eye zmdi-hc-fw"></i></a>-->
-             
-              <a class="btn btn-info btn-sm eye-zoom prd-quick-view" viewprdct="<?PHP echo $info['ProductId']?>" data-toggle="modal" data-target="#Prdquickview"  title="<?php echo $objlang->get('quick_view'); ?>" ><i class="zmdi zmdi-eye zmdi-hc-fw"></i></a>
-             
-            </div>
-             
-                        <div class="zoom hidden-xs hidden-sm">
-                                  &nbsp;
-                            </div>  
-             
-          </div>
-          
-
-        </div>
-                        
-                        
-                        
-                        
-					</div>
-		
-	<div class="product-meta">
-		<div class="left">
-			<h3 class="name"><a href="<?PHP echo $info['href'] ?>"><?PHP echo $info['ProductName'] ?></a></h3>
-
-            <div class="price" itemscope="" itemprop="offers">
-                   
-                   <?PHP
-                   	if( $info['special']!='')
-                    {
-                    	?>
-                        <span class="price-new"><?PHP echo $CurrencySymbol." ".$info['special'];  ?></span>
-	                    <span class="price-old"><?PHP echo $CurrencySymbol." ".$info['price'];  ?></span>
-                        <?PHP
-                    }
-                    else
-                    {
-                   ?>
-                   <span class="special-price"><?PHP echo $CurrencySymbol. $info['price'];  ?></span>
-                   <?PHP
-                   }
-                   ?>
-                     
-                    
-                    <meta content="900.00" itemprop="price">
-                    <meta content="" itemprop="priceCurrency">
-            </div>
-                
-                
-					</div>
-
-		<div class="clearfix"></div>
-
-	</div>
-    <div class="clearfix"></div>
-
-</div>
-
-
-
-                
-                  	
-		</div>
-        
-        
-        <div class="clearfix"></div>
-        
-         </div>
-    <?PHP
-    }
-    ?>
-      
-      
-      </div>
-     
-      
-      
-      
-      </div>
-      
-    </div>
-<?PHP
-    }
-?>
         <!-- recently viewed products ends here-->
+
+</div><!--  shopalzo-mis-widgets ends here -->
         
 </div>
 
-
-
+</div>
 
 <script type="text/javascript"><!--
 $('select[name=\'recurring_id\'], input[name="quantity"]').change(function(){
@@ -718,7 +544,7 @@ $('#button-cart').on('click', function() {
 	$.ajax({
 		url: 'index.php?route=checkout/cart/add',
 		type: 'post',
-		data: $('#product input[type=\'text\'],  input[id=\'product_id\'], #product input[type=\'radio\']:checked, #product input[type=\'checkbox\']:checked, #product select, #product textarea'),
+		data: $('#product input[type=\'text\'],  input[id=\'product_id\'],  #product input[type=\'radio\']:checked, #product input[type=\'checkbox\']:checked, #product select, #product textarea'),
 		dataType: 'json',
 		beforeSend: function() {
 			$('#button-cart').button('loading');
@@ -737,9 +563,9 @@ $('#button-cart').on('click', function() {
 						var element = $('#input-option' + i.replace('_', '-'));
 
 						if (element.parent().hasClass('input-group')) {
-							element.parent().after('<div class="text-danger">' + json['error']['option'][i] + '</div>');
+							element.parent().after('<p class="prd-err">' + json['error']['option'][i] + '</p>');
 						} else {
-							element.after('<div class="text-danger">' + json['error']['option'][i] + '</div>');
+							element.after('<p class="prd-err">' + json['error']['option'][i] + '</p>');
 						}
 					}
 				}
@@ -752,21 +578,30 @@ $('#button-cart').on('click', function() {
 				if ( json['error']['Outofstock'] )
 				{
 					
-					$('#notification').html('<div class="alert alert-danger">' + json['error']['Outofstock'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+				//	$('#notification').html('<div class="alert alert-danger">' + json['error']['Outofstock'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+					//$('html, body').animate({ scrollTop: 0 }, 'slow');
+					
+					$(".notify-msg").html( json['error']['Outofstock']).css({'color':'red'});
+					
+					
 				}
 
 				// Highlight any found errors
 							}
 
 			if (json['success']) {
-				$('#notification').html('<div class="alert alert-success">' + json['success'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+				//$('#notification').html('<div class="alert alert-success">' + json['success'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+				
+				var succmsg = '<p class="prd-success">' + json['success'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></p>';
+				
+				$(".notify-msg").html( succmsg).css({'color':'#1db40a','position':'relative'});
 		          
           if( $("#cart #cart-total").hasClass("cart-mini-info") ){
               json['total'] = json['total'].replace(/-(.*)+$/,"");
           }
           $('#cart-total').html(json['total']);
           
-				$('html, body').animate({ scrollTop: 0 }, 'slow');
+				//$('html, body').animate({ scrollTop: 0 }, 'slow');
 				
 				$('#cart > ul').load('index.php?route=common/cart/info ul li');
 			}
@@ -853,39 +688,49 @@ $('#review').delegate('.pagination a', 'click', function(e) {
 
 $('#review').load('index.php?route=product/product/review&product_id=<?php echo $product_id; ?>');
 
-$('#button-review').on('click', function() {
-  $.ajax({
-    url: 'index.php?route=product/product/write&product_id=<?php echo $product_id; ?>',
-    type: 'post',
-    dataType: 'json',
-    data: $("#form-review").serialize(),
-    beforeSend: function() {
-      $('#button-review').button('loading');
-    },
-    complete: function() {
-      $('#button-review').button('reset');
-    },
-    success: function(json) {
-      $('.alert-success, .alert-danger').remove();
-
-      if (json['error']) {
-		  $('html, body').animate({  scrollTop: $('#writereview').offset().top }, 800);
-        $('#review').after('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + '</div>');
-      }
-
-      if (json['success']) {
-		   $('html, body').animate({  scrollTop: $('#writereview').offset().top }, 800);
-        $('#review').after('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + '</div>');
-
-      //  $('input[name=\'name\']').val('');
-        $('textarea[name=\'text\']').val('');
-        $('input[name=\'rating\']:checked').prop('checked', false);
-      }
-    }
-  });
+//$('#button-review').on('click', function() {
+	
+	$(document).on('click','#button-review',function()
+	{
+	
+	  $.ajax({
+		url: 'index.php?route=product/product/write&product_id=<?php echo $product_id; ?>',
+		type: 'post',
+		dataType: 'json',
+		data: $("#form-review").serialize(),
+		beforeSend: function() {
+		  $('#button-review').button('loading');
+		},
+		complete: function() {
+		  $('#button-review').button('reset');
+		},
+		success: function(json) {
+		  $('.alert-success, .alert-danger').remove();
+	
+		  if (json['error']) {
+			  //$('html, body').animate({  scrollTop: $('#writereview').offset().top }, 800);
+			$('#form-review').before('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + '</div>');
+		  }
+		  if (json['success']) {
+		//	   $('html, body').animate({  scrollTop: $('#writereview').offset().top }, 800);
+			$('#form-review').before('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + '</div>');
+	
+		  //  $('input[name=\'name\']').val('');
+			$('textarea[name=\'text\']').val('');
+			$('#input-captcha').val('');
+			$('input[name=\'rating\']:checked').prop('checked', false);
+		  }
+		}
+	  });
 });
 
-$(document).ready(function() { 
+$(document).ready(function() 
+{ 
+	
+	//$(".add-btm-brder img").css({'height':'190px'});
+
+	$("#writereview .panel-heading").css({'border':'none'});
+
 	$('.thumbnail a').click(
 		function(){  
 			$.magnificPopup.open({
@@ -899,20 +744,24 @@ $(document).ready(function() {
 	);
 });
 //--></script> 
+<!--
 <?php if( $productConfig['product_enablezoom'] ) { ?>
 <script type="text/javascript" src=" catalog/view/javascript/jquery/elevatezoom/elevatezoom-min.js"></script>
 <script type="text/javascript">
+
     var zoomCollection = '<?php echo $productConfig["product_zoomgallery"]=="basic"?".product-image-zoom":"#image";?>';
     $( zoomCollection ).elevateZoom({
     <?php if( $productConfig['product_zoommode'] != 'basic' ) { ?>
-    zoomType        : "<?php echo $productConfig['product_zoommode'];?>",
+    zoomType  : "<?php echo $productConfig['product_zoommode'];?>",
     <?php } ?>
+	
     lensShape : "<?php echo $productConfig['product_zoomlensshape'];?>",
-    lensSize    : <?php echo (int)$productConfig['product_zoomlenssize'];?>,
+    lensSize    :<?php echo (int)$productConfig['product_zoomlenssize'];?>,
     easing:true,
     gallery:'image-additional-carousel',
     cursor: 'pointer',
-    galleryActiveClass: "active"
+    galleryActiveClass: "active",
+	tint:true, tintColour:'#000', tintOpacity:0.5,easingDuration:3000,zoomWindowFadeIn:1000 
   });
  
 </script>
@@ -927,11 +776,9 @@ $(document).ready(function() {
     });
   });
 </script>
+
 <?php } ?>
-
-
-<?php echo $footer; ?>
-
+-->
 <script>
 
 	$(document).ready(function()
@@ -949,33 +796,7 @@ $(document).ready(function() {
 			}
 			
 		});
-		
-		
-	/*	$(document).on('click','.view-reviews',function()
-		{
-			
-			setTimeout(function()
-									{ 
-										
-										if( !$(".reviewsection").hasClass('collapsed') )
-											$('html, body').animate({  scrollTop: $('#tab-review').offset().top }, 800);
-										else
-										{
-											$('html, body').animate({  scrollTop: $('#tab-review').offset().top }, 800);
-											$('.reviewsection').trigger('click'); 
-										}
-										
-										
-									}, 100);
-			
-			
-			
-		
-		});*/
-		
-		
-		
-		
+
 	});
 
 </script>
@@ -994,8 +815,11 @@ $('.owl-theme .owl-nav').css({'top':'2px','background':'#000'});
 
 
 });
-            $(document).ready(function() {
-				
+ $(document).ready(function() {
+		
+$(".row.most-nopad .products-block.most-v .owl-item").css("border","none !important");
+	$(".owl-item, .products-block, .item.mostviewed_prdcts").css({"border":"none"});
+	$(".products-block img").css({"border":"none"});
 
 				
 				//$(".item").parent().css({'width':'72%'});
@@ -1003,19 +827,20 @@ $('.owl-theme .owl-nav').css({'top':'2px','background':'#000'});
                 loop: false,
 				autoplay:false,
 				margin: 10,
-				slideBy:5,
+				slideBy:3,
                 responsiveClass: true,
+			
                 responsive: {
                   0: {
                     items: 1,
                     nav: true
                   },
                   600: {
-                    items: 5,
+                    items: 3,
                     nav: false
                   },
                   1000: {
-                    items: 5,
+                    items: 3,
                     nav: true,
 					loop: false,
                     margin: 0
@@ -1035,45 +860,7 @@ $('.owl-theme .owl-nav').css({'top':'2px','background':'#000'});
 			
 			
 			
-			 $(document).ready(function() {
-				
-
-				
-				//$(".item").parent().css({'width':'72%'});
-            $('.owl-carousel').owlCarousel({
-                loop: false,
-				autoplay:false,
-				margin: 10,
-				slideBy:5,
-                responsiveClass: true,
-                responsive: {
-                  0: {
-                    items: 1,
-                    nav: true
-                  },
-                  600: {
-                    items: 5,
-                    nav: false
-                  },
-                  1000: {
-                    items: 5,
-                    nav: true,
-					loop: false,
-                    margin: 0
-                  }
-                }
-              });
-			  
-			  
-			  var owl = $('.owl-carousel');
-				owl.owlCarousel();
-			  
-			  owl.on('changed.owl.carousel', function(event) 
-			  {
-  					//alert();
-				});
-            });
-			
+			 
 			//
 			
 			$(document).on('click','.addtocrosssale',function()
@@ -1144,6 +931,295 @@ $(document).on('click','.addtocrosssale',function()
 				
 			});			
 
+
+
+$(document).on('click','.lvda-thumbnail',function()
+{
+	var thumbnail = $(this).attr('src');
+	
+	thumbnail = thumbnail.replace('62x81','420x546');
+	$(".clickedthumbnail").attr('src',thumbnail);
+	$(".clickedthumbnail").attr('data-zoom-image',thumbnail);
+	$(".zoomLens img").attr('src',thumbnail);
+	
+	$(".zoomWindow").css({'background-image':'url('+thumbnail+')'});
+});
+
 </script>
 
+<?php echo $footer; ?>
 
+<script src="catalog/view/javascript/elevatezoom/jquery.elevatezoom.js"></script>
+
+<script>
+ $(".view-product-zoom").elevateZoom({scrollZoom : true},{zoomWindowPosition:10},{zoomWindowWidth:300, zoomWindowHeight:100} );
+ 
+ var incr=0;
+var decr=$('.prd-thumbs a').length;
+var clicks=0;
+var trans =0;
+var len = 0;
+
+$(document).ready(function()
+{
+	$(".row.most-nopad .products-block.most-v .owl-item").css("border","none");
+
+	$(".lvda-zoom-thumb").css({'height':'508px'});
+	
+	var imgthumb = $(".lvda-zoom-thumb img").height();
+		imgthumb = parseInt(imgthumb);
+		
+		if(imgthumb>508)
+			$(".lvda-zoom-thumb img").css({'height':'497px'});
+		
+	//$(".nextbtn").on('click',function()
+	$(document).on('click','.nextbtn',function()
+	{
+
+		
+		/*
+		$("#prv").show();
+		incr = parseInt(incr);
+		var done='0';
+		incr= (incr)+(1);
+		
+		var len = ($('.prd-thumbs-ssr a').length)*($('.prd-thumbs-ssr a img').height());
+				
+				var divident = parseInt($('.prd-thumbs-ssr a').length)+incr-(1);
+					len = (len)/(divident);
+					len = "-"+len;
+					
+				if( len == chkfinaltrans )
+					$("#nxt").hide();
+		
+		
+		if( incr==1 )
+		{
+			$('.prd-thumbs-ssr a').each(function(ind,val)
+			{
+				$('.prd-thumbs-ssr a').eq((ind)-(1)).css({'transform':'translateY(-'+$('.prd-thumbs-ssr a img').height()+'%)'});
+			});
+			
+			if( len == "-110" && parseInt($('.prd-thumbs-ssr a').length)==5)
+			$("#nxt").hide();
+		}
+		else
+		{
+				var trns = $('.prd-thumbs-ssr a').attr('style');
+				trns = trns.split("(");
+				trns = trns[1].split('%');
+				var finaltrans = parseInt(trns[0]);
+				
+				finaltrans = (finaltrans)-($('.prd-thumbs-ssr a img').height()+(10.75));
+				var chkfinaltrans = finaltrans;
+				
+				
+				if(chkfinaltrans<0)
+					$('.prd-thumbs-ssr a').css({'transform':'translateY('+finaltrans+'%)'});
+				
+				var len = ($('.prd-thumbs-ssr a').length)*($('.prd-thumbs-ssr a img').height());
+				
+				var divident = parseInt($('.prd-thumbs-ssr a').length);
+					len = ((len)/(divident))*incr;
+					len = (len)+(10.75);
+					len = "-"+len;
+					
+				if( len == finaltrans && incr==parseInt($('.prd-thumbs-ssr a').length)-3 )
+						$("#nxt").hide();
+					
+		}
+	
+	 */
+	 
+	 	$(".pre-btn").addClass('prebtn');
+		
+		$("#prv").show();
+		incr = parseInt(incr);
+		var done='0';
+		incr= (incr)+(1);
+		
+		var len = ($('.prd-thumbs-ssr img').length)*($('.prd-thumbs-ssr  img').height());
+				
+				var divident = parseInt($('.prd-thumbs-ssr img').length)+incr-(1);
+					len = (len)/(divident);
+					len = "-"+len;
+					
+				if( len == chkfinaltrans )
+					$("#nxt").hide();
+		
+		
+		if( incr==1 )
+		{
+			$('.prd-thumbs-ssr img').each(function(ind,val)
+			{
+				$('.prd-thumbs-ssr img').eq((ind)-(1)).css({'transform':'translateY(-'+$('.prd-thumbs-ssr img').height()+'px)'});
+			});
+			
+			var rnd = (parseInt($('.prd-thumbs-ssr img').length));
+				rnd = parseInt(rnd);
+
+				if( rnd<=5 )
+						$("#nxt").removeClass('nextbtn');
+		}
+		else
+		{
+				var trns = $('.prd-thumbs-ssr img').attr('style');
+				trns = trns.split("(");
+				trns = trns[1].split('%');
+				var finaltrans = parseInt(trns[0]);
+				
+				finaltrans = (finaltrans)-($('.prd-thumbs-ssr img').height());
+				var chkfinaltrans = finaltrans;
+				
+				
+				if(chkfinaltrans<0)
+					$('.prd-thumbs-ssr img').css({'transform':'translateY('+finaltrans+'px)'});
+				
+				var len = ($('.prd-thumbs-ssr img').length)*($('.prd-thumbs-ssr img').height());
+				
+				var divident = parseInt($('.prd-thumbs-ssr img').length);
+					len = ((len)/(divident))*(incr);
+					len = (len)+(10.75);
+					
+					len = "-"+len;
+					
+				//	alert(len+":"+finaltrans+":"+incr+":"+ parseInt($('.prd-thumbs-ssr img').length) );
+					
+					var rnd = (parseInt($('.prd-thumbs-ssr img').length))/2;
+						rnd = parseInt(rnd);	
+				if( incr>=rnd )
+						$("#nxt").removeClass('nextbtn');
+					
+		}
+	
+	
+	 
+	});
+
+	//$(".prebtn").on('click',function()
+	$(document).on('click','.prebtn',function()
+	{
+		incr=(incr)-(1);
+		
+		if(!$("#nxt").hasClass('nextbtn'))
+			$("#nxt").addClass('nextbtn');
+			
+		var trns = $('.prd-thumbs-ssr img').attr('style');
+				trns = trns.split("(");
+		
+				trns = trns[1].split('%');
+				
+				var finaltrans = parseInt(trns[0]);
+				console.log(finaltrans);
+				
+				finaltrans = (finaltrans)+($('.prd-thumbs-ssr img').height());
+				console.log(finaltrans);
+				var chkfinaltrans = finaltrans;
+				
+				if(chkfinaltrans<0)
+				{
+					$('.prd-thumbs-ssr img').css({'transform':'translateY('+finaltrans+'px)'});
+				}
+				else
+				{
+					$('.prd-thumbs-ssr img').css({'transform':'translateY(0%)'});
+					$("#prv").removeClass('prebtn');
+				}
+	});
+
+ });
+ 
+ 
+ $(document).on('click','#ReviewForm .close',function()
+ {
+	 $(".alert").remove();
+ });
+ 
+ $(document).on('click','.customer-review-writing',function()
+ {
+	 $(".alert").remove();
+ });
+ 
+ $(document).on('click','.prd-success .close',function()
+ {
+	 $(".prd-success").remove();
+ });
+ 
+ 
+ $(document).ready(function()
+{ 
+	$('.products-block').css({'background':'#eee'});
+});
+
+$(document).on('click','.refresh-captcha',function()
+{
+
+$(this).prev().attr('src','index.php?route=captcha/basic_captcha/captcha');
+	
+});
+ 
+</script>
+
+<div id="ReviewForm" class="modal fade forgot-modal" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Provide Your Review</h4>
+      </div>
+      <div class="modal-body">
+        
+          <form class="form-horizontal" id="form-review">
+           
+                                <?php if ($review_guest) { ?>
+                                <div class="form-group required">
+                                  <div class="col-sm-12">
+                                  <!--  <label class="control-label" for="input-name"><?php echo $entry_name; ?></label>-->
+                                    <input type="text" name="name" value="<?php echo $customer_name; ?>" id="input-name" placeholder="<?php echo $entry_name; ?>" class="form-control" />
+                                  </div>
+                                </div>
+                                <div class="form-group required">
+                                  <div class="col-sm-12">
+                                    <!--<label class="control-label" for="input-review"><?php echo $entry_review; ?></label>-->
+                                    <textarea name="text" rows="5" id="input-review" class="form-control" placeholder="<?php echo $entry_review; ?>"></textarea>
+                                    <div class="help-block"><?php echo $text_note; ?></div>
+                                  </div>
+                                </div>
+                                <div class="form-group required">
+                                  <div class="col-sm-12">
+                                    <label class="control-label"><?php echo $entry_rating; ?></label>
+                                    &nbsp;&nbsp;&nbsp; <?php echo $entry_bad; ?>&nbsp;
+                                    <input type="radio" name="rating" value="1" />
+                                    &nbsp;
+                                    <input type="radio" name="rating" value="2" />
+                                    &nbsp;
+                                    <input type="radio" name="rating" value="3" />
+                                    &nbsp;
+                                    <input type="radio" name="rating" value="4" />
+                                    &nbsp;
+                                    <input type="radio" name="rating" value="5" />
+                                    &nbsp;<?php echo $entry_good; ?></div>
+                                </div>
+
+                                <?php echo $captcha; ?>
+
+
+                                <div class="buttons clearfix">
+                                  <div class="pull-right">
+                                    <button type="button" id="button-review" data-loading-text="<?php echo $text_loading; ?>" class="btn btn-primary reg-button">Submit </button>
+                                  </div>
+                                </div>
+                                <?php } else { ?>
+                                <?php echo $text_login; ?>
+                                <?php } ?>
+                              </form>
+        
+        
+      </div>
+      
+    </div>
+
+  </div>
+</div>

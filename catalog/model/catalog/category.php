@@ -168,5 +168,95 @@ class ModelCatalogCategory extends Model {
 			return "0";
 	}
 	
+	public function getSubcategories()
+	{	
+	
+		$sbcategories = array();
+		
+		$qry = $this->db->query("SELECT DISTINCT(cat.category_id) as subcat, parent_id from oc_category as cat join oc_product_to_category prdtocat on prdtocat.category_id=cat.category_id Limit 3");	
+		
+	
+	/*
+		if( $qry->num_rows ==1)
+		{
+			
+			foreach( $qry->rows as $val)
+			{
+				$Parentid = $val['parent_id'];
+				
+				$query = $this->db->query("SELECT  name FROM oc_category_description where category_id=".$Parentid);
+				$categ = '';
+				
+				foreach($query->row as $catname)
+				{
+					$categ =  str_replace(" ","-",strtolower($catname));
+					$categ=$categ.'-';
+				}
+				#echo $categ; exit; 
+				$query = $this->db->query("SELECT  name FROM oc_category_description where category_id=".$val['subcat']);
+				
+				foreach($query->row as $catname)
+				{
+					$subcateg =  str_replace(" ","-",strtolower($catname));
+					$subcateg = $categ.$subcateg;
+				}
+				
+				return  $subcateg; 
+			}
+		}
+		else
+		{
+				
+		}
+		*/
+	foreach( $qry->rows as $data )	
+	{
+		if( $data['subcat']>0)
+		{
+		$qrey = $this->db->query("select meta_title,name, LEFT(name,1) as IconLetter from oc_category_description where category_id=".$data['subcat']);	
+		$parentcateg = $this->db->query("select meta_title from oc_category_description where category_id=".$data['parent_id']);	
+		
+		//get a random product image form this categpry
+		
+		$prdimg = $this->db->query("SELECT prd.image as ProductImage from oc_product as prd inner join oc_product_to_category as prdcat on prdcat.product_id = prd.product_id where prdcat.category_id=".$data['subcat']." ORDER BY prd.product_id ASC LIMIT 1" );
+			
+			
+			$setprdimg = explode(".",$prdimg->row['ProductImage']);
+			$prdimage =$setprdimg;
+				
+		$sbcategories[] = array(
+								"meta_title"=>$parentcateg->row['meta_title']."/".$qrey->row['meta_title'],
+								'name'=>$qrey->row['name'],
+								'IconLetter'=>$qrey->row['IconLetter'],
+								"ProductImg"=>$prdimg->row['ProductImage']
+								);
+			
+		}
+		else
+		{
+		$qrey = $this->db->query("select meta_title, name, LEFT(name,1) as IconLetter from oc_category_description where category_id=".$data['category_id']);	
+		$parentcateg = $this->db->query("select meta_title from oc_category_description where category_id=".$data['parent_id']);	
+		
+			$prdimg = $this->db->query("SELECT prd.image as ProductImage from oc_product as prd inner join oc_product_to_category as prdcat on prdcat.product_id = prd.product_id where prdcat.category_id=".$data['category_id']." ORDER BY prd.product_id ASC LIMIT 1" );
+		
+			
+			$setprdimg = explode(".",$prdimg->row['ProductImage']);
+			$prdimage =$setprdimg;
+			
+			
+		$sbcategories[] = array(
+									"meta_title"=>$parentcateg->row['meta_title']."/".$qrey->row['meta_title'],
+									'name'=>$qrey->row['name'],
+									'IconLetter'=>$qrey->row['IconLetter'],
+									"ProductImg"=>$prdimg->row['ProductImage']
+									);	
+		}
+	}
+	
+	return $sbcategories;
+		
+		
+	}
+	
 	
 }

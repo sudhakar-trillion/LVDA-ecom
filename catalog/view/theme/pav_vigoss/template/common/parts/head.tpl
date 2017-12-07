@@ -12,7 +12,9 @@ $themeConfig = array_merge( array('header' => ''), $sconfig->get('themecontrol')
 
 /* Add scripts files */
 $helper->addScript( 'catalog/view/javascript/jquery/jquery-2.1.1.min.js' );
+
 $helper->addScript('catalog/view/javascript/jquery/magnific/jquery.magnific-popup.min.js');
+
 $helper->addScript( 'catalog/view/javascript/bootstrap/js/bootstrap.min.js' );
 $helper->addScript( 'catalog/view/javascript/common.js' );
 $helper->addScript( 'catalog/view/theme/'.$themeName.'/javascript/common.js' );
@@ -92,7 +94,7 @@ $logoType = $helper->getConfig('logo_type','logo-theme'); ?>
     <?php 
     } ?>
     <link href='https://fonts.googleapis.com/css?family=Lato:400,700,300,900' rel='stylesheet' type='text/css'>
-	<link href="http://192.168.0.6/pav-vigoss/catalog/view/theme/default/stylesheet/sliderlayer/css/typo.css" />
+	<link href="pav-vigoss/catalog/view/theme/default/stylesheet/sliderlayer/css/typo.css" />
     <!-- FONT -->
     <?php 
       if( isset($themeConfig['enable_customfont']) && $themeConfig['enable_customfont'] ){

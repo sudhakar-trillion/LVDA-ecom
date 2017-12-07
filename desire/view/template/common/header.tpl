@@ -54,19 +54,39 @@
 	margin-left:30px;
 }
 
-
+#profile
+{
+	display:none;
+}
 </style>
 
 </head>
 <body>
-<div id="container">
+<div id="container"  class="<?php if ($logged) { } else { echo 'body-bg'; }?>">
+<?php if ($logged) { ?>
 <header id="header" class="navbar navbar-static-top">
-  <div class="navbar-header">
+  
     <?php if ($logged) { ?>
-    <a type="button" id="button-menu" class="pull-left"><i class="fa fa-indent fa-lg"></i></a>
+  <div class="navbar-header">
+    
+    <a href="#" target="_blank" class="navbar-brand"><img src="view/image/lvda small logo.png" alt="<?php echo $heading_title; ?>" title="<?php echo $heading_title; ?>" /></a>
+    
+    <?php if ($logged) { ?>
+    <a type="button" id="button-menu" class="pull-left nav-brand-icon"><img src="view/image/icon.png" /></a>
     <?php } ?>
-    <a href="<?php echo $home; ?>" class="navbar-brand"><img src="view/image/logo.png" alt="<?php echo $heading_title; ?>" title="<?php echo $heading_title; ?>" /></a></div>
-  <?php if ($logged) { ?>
+    </div>
+  <?php }
+  else
+  {
+  	?>
+    <!-- <div class="navbar-header">
+    	<img src="view/image/logo.png" alt="<?php echo $heading_title; ?>" title="<?php echo $heading_title; ?>" />
+    </div>-->
+    <?PHP
+  }
+  
+  if ($logged) { ?>
+  
   <ul class="nav pull-right">
     <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown"><span class="label label-danger pull-left"><?php echo $alerts; ?></span> <i class="fa fa-bell fa-lg"></i></a>
       <ul class="dropdown-menu dropdown-menu-right alerts-dropdown">
@@ -74,10 +94,15 @@
         <li><a href="<?php echo $processing_status; ?>" style="display: block; overflow: auto;"><span class="label label-warning pull-right"><?php echo $processing_status_total; ?></span><?php echo $text_processing_status; ?></a></li>
         <li><a href="<?php echo $complete_status; ?>"><span class="label label-success pull-right"><?php echo $complete_status_total; ?></span><?php echo $text_complete_status; ?></a></li>
         <li><a href="<?php echo $return; ?>"><span class="label label-danger pull-right"><?php echo $return_total; ?></span><?php echo $text_return; ?></a></li>
-        <li class="divider"></li>
+        
+       
+       <!--
+       <li class="divider"></li>
         <li class="dropdown-header"><?php echo $text_customer; ?></li>
         <li><a href="<?php echo $online; ?>"><span class="label label-success pull-right"><?php echo $online_total; ?></span><?php echo $text_online; ?></a></li>
         <li><a href="<?php echo $customer_approval; ?>"><span class="label label-danger pull-right"><?php echo $customer_total; ?></span><?php echo $text_approval; ?></a></li>
+        
+        -->
         <li class="divider"></li>
         <li class="dropdown-header"><?php echo $text_product; ?></li>
         <li><a href="<?php echo $product; ?>"><span class="label label-danger pull-right"><?php echo $product_total; ?></span><?php echo $text_stock; ?></a></li>
@@ -87,23 +112,26 @@
         <li><a href="<?php echo $affiliate_approval; ?>"><span class="label label-danger pull-right"><?php echo $affiliate_total; ?></span><?php echo $text_approval; ?></a></li>
       </ul>
     </li>
-    <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-home fa-lg"></i></a>
+    <!--<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-home fa-lg"></i></a>
       <ul class="dropdown-menu dropdown-menu-right">
         <li class="dropdown-header"><?php echo $text_store; ?></li>
         <?php foreach ($stores as $store) { ?>
         <li><a href="<?php echo $store['href']; ?>" target="_blank"><?php echo $store['name']; ?></a></li>
         <?php } ?>
       </ul>
-    </li>
-    <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-life-ring fa-lg"></i></a>
+    </li>-->
+    <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cloud-download fa-lg"></i></a>
       <ul class="dropdown-menu dropdown-menu-right">
         <li class="dropdown-header"><?php echo $text_help; ?></li>
-        <li><a href="http://www.opencart.com" target="_blank"><?php echo $text_homepage; ?></a></li>
-        <li><a href="http://docs.opencart.com" target="_blank"><?php echo $text_documentation; ?></a></li>
-        <li><a href="http://forum.opencart.com" target="_blank"><?php echo $text_support; ?></a></li>
+<!--        <li><a href="http://www.opencart.com" target="_blank"><?php echo $text_homepage; ?></a></li>-->
+        <li><a href="http://docs.opencart.com" target="_blank"> <?php echo $text_documentation; ?></a></li>
+<!--        <li><a href="http://forum.opencart.com" target="_blank"><?php echo $text_support; ?></a></li>-->
       </ul>
     </li>
-    <li><a href="<?php echo $logout; ?>"><span class="hidden-xs hidden-sm hidden-md"><?php echo $text_logout; ?></span> <i class="fa fa-sign-out fa-lg"></i></a></li>
+    <li><a href="<?php echo $logout; ?>" title="Logout"> <i class="fa fa-power-off fa-lg"></i> <span class="hidden-xs hidden-sm hidden-md"><?php #echo $text_logout; ?></span></a></li>
   </ul>
   <?php } ?>
 </header>
+<?PHP
+}
+?>

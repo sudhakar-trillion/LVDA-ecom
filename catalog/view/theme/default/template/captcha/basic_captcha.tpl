@@ -37,6 +37,7 @@
             <?php } ?>
             </div>
             <img src="index.php?route=captcha/basic_captcha/captcha" class="pull-right"  alt="" style="margin-top:0px" />
+             <span class="refresh-captcha" style="font-size:25px; padding-top:10px; cursor:pointer"><i class="fa fa-refresh" aria-hidden="true"></i></span>
             
             </div>
 
@@ -53,6 +54,7 @@
             <?php } ?>
             </div>
             <img src="index.php?route=captcha/basic_captcha/captcha" class="pull-right"  alt="" style="margin-top:0px"  />
+             <span class="refresh-captcha" style="font-size:25px; padding-top:10px; cursor:pointer"><i class="fa fa-refresh" aria-hidden="true"></i></span>
             
             </div>
 
@@ -69,6 +71,7 @@
             <?php } ?>
             </div>
             <img src="index.php?route=captcha/basic_captcha/captcha" class="pull-right"  alt="" style="margin-top:0px" />
+             <span class="refresh-captcha" style="font-size:25px; padding-top:10px; cursor:pointer"><i class="fa fa-refresh" aria-hidden="true"></i></span>
             
             </div>
         
@@ -91,6 +94,7 @@
     <div class="col-sm-12 ">
       <div class="col-sm-8  "> <input type="text" name="captcha" id="input-captcha" class="form-control" placeholder="Captcha" /></div>
       <img src="index.php?route=captcha/basic_captcha/captcha"  alt="" style="margin-top:0px" />
+      <span class="refresh-captcha" style="font-size:25px; padding-top:10px; cursor:pointer"><i class="fa fa-refresh" aria-hidden="true"></i></span>
       <?php if ($error_captcha) { ?>
       <div class="text-danger"><?php echo $error_captcha; ?></div>
       <?php } ?>

@@ -3,6 +3,11 @@ class ControllerAccountLogin extends Controller {
 	private $error = array();
 
 	public function index() {
+
+	
+	
+		
+		#echo $referer; exit; 
 		$this->load->model('account/customer');
 		
 		if(isset($this->session->data['Activated']))
@@ -68,7 +73,11 @@ class ControllerAccountLogin extends Controller {
 
 		$this->document->setTitle($this->language->get('heading_title'));
 
-		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
+		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) 
+		{
+			//echo $_SERVER['HTTP_REFERER']; exit; 
+			
+			
 			// Unset guest
 			unset($this->session->data['guest']);
 
@@ -101,6 +110,16 @@ class ControllerAccountLogin extends Controller {
 				'customer_id' => $this->customer->getId(),
 				'name'        => $this->customer->getFirstName() . ' ' . $this->customer->getLastName()
 			);
+			
+			
+			$referer = $this->session->data['HTTP_REFERER'];	
+			
+			//insert the details into customerlogin table
+			
+			
+			$this->db->query("INSERT INTO oc_customer_online values('".$_SERVER['REMOTE_ADDR']."','".$this->customer->getId()."','".$referer."','".$referer."','".date("Y-m-d H:i:s")."')" );
+		
+			$this->session->data['HTTP_REFERER']='';
 
 			$this->model_account_activity->addActivity('login', $activity_data);
 
@@ -109,10 +128,26 @@ class ControllerAccountLogin extends Controller {
 				$this->response->redirect(str_replace('&amp;', '&', $this->request->post['redirect']));
 			} else {
 				//$this->response->redirect($this->url->link('account/account', '', true));
-				$this->response->redirect($this->config->get('config_url').'my-account');
+				
+				if($referer!='')
+					$this->response->redirect($referer);
+				else
+					$this->response->redirect($this->config->get('config_url').'my-account');
 			}
 		}
-
+		else
+		{
+			$this->session->data['HTTP_REFERER'] = '';
+	
+	if( isset($_SERVER['HTTP_REFERER']) )
+			$referer = $_SERVER['HTTP_REFERER'];
+	else
+		$referer = '';
+	
+	$this->session->data['HTTP_REFERER'] = $referer;
+	
+	#echo $this->session->data['HTTP_REFERER']; exit; 	
+		}
 		$data['breadcrumbs'] = array();
 
 		$data['breadcrumbs'][] = array(
@@ -213,6 +248,13 @@ class ControllerAccountLogin extends Controller {
 	}
 
 	protected function validate() {
+		
+		
+		if( array_key_exists('mastersession',$this->session->data))
+			$mastersession = $this->session->data['mastersession'];
+		else	
+			$mastersession = '';
+			
 		// Check how many login attempts have been made.
 		$login_info = $this->model_account_customer->getLoginAttempts($this->request->post['email']);
 
@@ -239,7 +281,11 @@ class ControllerAccountLogin extends Controller {
 				$this->model_account_customer->deleteLoginAttempts($this->request->post['email']);
 			}
 		}
-
+		
+		if( $mastersession!='')
+		 $this->session->data['mastersession'] = $mastersession;
+		
+		
 		return !$this->error;
 	}
 }

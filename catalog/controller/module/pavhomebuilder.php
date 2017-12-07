@@ -30,7 +30,12 @@ class ControllerModulepavhomebuilder extends Controller {
 		$this->load->model('design/banner');
 		$this->load->model('extension/module');
 		$this->load->model('extension/pavwidget');
-
+		
+		$this->load->model('catalog/category');
+		
+		//getting the sub-category names
+		
+		$Subcategories = $this->model_catalog_category->getSubcategories();
 	 
 
 		if( isset($this->request->get['home_id']) ){
@@ -79,6 +84,7 @@ class ControllerModulepavhomebuilder extends Controller {
  		$this->mdata['class'] = isset($setting['class'])?$setting['class']:'';
  		$this->mdata['heading'] = isset($setting['heading'])?$setting['heading']:'';
 	
+		$this->mdata['Subcategories'] =  $Subcategories;
 		//echo $tpl; exit; 
 	
 		return $this->load->view('module/'.$tpl, $this->mdata);

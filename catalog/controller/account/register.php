@@ -3,6 +3,7 @@ class ControllerAccountRegister extends Controller {
 	private $error = array();
 
 	public function index() {
+		
 		if ($this->customer->isLogged()) {
 			$this->response->redirect($this->url->link('account/account', '', true));
 		}
@@ -16,9 +17,16 @@ class ControllerAccountRegister extends Controller {
 		$this->document->addStyle('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css');
 
 		$this->load->model('account/customer');
+		
+		$msgData='';
+		
 
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
 			$customer_id = $this->model_account_customer->addCustomer($this->request->post);
+			
+			
+			$msgData = '<div class="alert alert-success">Successfully registered, kindly check your inbox for activation link</div>';
+			$this->session->data['registration-success']=$msgData;
 			
 			$this->response->redirect($this->config->get('config_url').'register-success');
 			
@@ -42,7 +50,15 @@ class ControllerAccountRegister extends Controller {
 
 			$this->response->redirect($this->url->link('account/success'));
 		}
-
+		if( isset( $this->session->data['registration-success'] ) )
+			{
+				$data['registrationsuccess'] =  $this->session->data['registration-success'];
+				$this->session->data['registration-success'] ='';
+			}
+		else
+			$data['registrationsuccess'] =  '' ;	
+		
+	
 		$data['breadcrumbs'] = array();
 
 		$data['breadcrumbs'][] = array(
@@ -376,7 +392,7 @@ class ControllerAccountRegister extends Controller {
 			$this->error['warning'] = $this->language->get('error_exists');
 		}
 
-		if ((utf8_strlen($this->request->post['telephone']) < 3) || (utf8_strlen($this->request->post['telephone']) > 32)) {
+		if ((utf8_strlen($this->request->post['telephone']) < 10)) {
 			$this->error['telephone'] = $this->language->get('error_telephone');
 		}
 
@@ -424,7 +440,7 @@ class ControllerAccountRegister extends Controller {
             }
 		}
 
-		if ((utf8_strlen($this->request->post['password']) < 4) || (utf8_strlen($this->request->post['password']) > 20)) {
+		if ((utf8_strlen($this->request->post['password']) < 6) || (utf8_strlen($this->request->post['password']) > 20)) {
 			$this->error['password'] = $this->language->get('error_password');
 		}
 

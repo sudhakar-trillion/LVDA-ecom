@@ -3,7 +3,7 @@
 $_['heading_title']            = 'Products in the cart';//'Shopping Cart';
 
 // Text
-$_['text_success']             = 'Success: You have added <a href="%s">%s</a> to your <a href="%s">shopping cart</a>!';
+$_['text_success']             = 'You have added <a href="%s" style="color:#1488ff" >%s</a> to <a href="%s" style="color:#1488ff" >your cart</a>!';
 $_['text_remove']              = 'Success: You have modified your shopping cart!';
 $_['text_login']               = 'Attention: You must <a href="%s">login</a> or <a href="%s">create an account</a> to view prices!';
 $_['text_items']               = '%s item(s) - %s';

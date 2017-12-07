@@ -193,8 +193,8 @@
 	
     <div class="bottom">
                       <div class="cart">            
-               <button data-loading-text="Loading..." class="btn btn-danger" type="button" onclick="<?PHP if($info['PrdAvailQuantity']>2){?>cart.add('<?PHP echo $info['ProductId']?>');<?PHP } ?>">
-                <?PHP if($info['PrdAvailQuantity']>2){?> <span>Add to Cart</span><?PHP } else echo 'Out Of Stock'; ?>
+               <button data-loading-text="Loading..." class="btn btn-danger" type="button" onclick="<?PHP if($info['PrdAvailQuantity']>1){?>cart.add('<?PHP echo $info['ProductId']?>');<?PHP } ?>">
+                <?PHP if($info['PrdAvailQuantity']>1){?> <span>Add to Cart</span><?PHP } else echo 'Out Of Stock'; ?>
               </button>
             </div>
                   

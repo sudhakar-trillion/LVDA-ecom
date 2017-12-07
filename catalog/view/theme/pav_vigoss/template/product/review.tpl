@@ -1,5 +1,7 @@
 <?php if ($reviews) { ?>
+
 <?php foreach ($reviews as $review) { ?>
+
 <table class="table table-striped table-bordered">
   <tr>
     <td style="width: 50%;"><strong><?php echo $review['author']; ?></strong></td>
@@ -12,7 +14,7 @@
       <?php if ($review['rating'] < $i) { ?>
       <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-1x"></i></span>
       <?php } else { ?>
-      <span class="fa fa-stack"><i class="fa fa-star fa-stack-1x"></i><i class="fa fa-star-o fa-stack-1x"></i></span>
+      <span class="fa fa-stack"><i class="fa fa-star fa-stack-1x"></i><!--<i class="fa fa-star-o fa-stack-1x"></i>--></span>
       <?php } ?>
       <?php } ?>
       </div></td>

@@ -14,7 +14,7 @@
     </div>
   <ul class="dropdown-menu pull-right">
     <?php if ($products || $vouchers) { ?>
-    <li>
+    <li class="shopalzo-cart-items">
       <table class="table first">
         <?php foreach ($products as $product) { ?>
         <tr>

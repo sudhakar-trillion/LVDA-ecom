@@ -14,8 +14,8 @@
         <div class="bottom">
           <?php if( !isset($listingConfig['catalog_mode']) || !$listingConfig['catalog_mode'] ) { ?>
             <div class="cart">            
-               <button data-loading-text="Loading..." class="btn btn-danger" type="button" onclick="<?PHP if( $product['PrdAvailQuantity']>2){?>cart.add('<?php echo $product['product_id']; ?>')<?PHP } ?>;">
-                 <span><?php if( $product['PrdAvailQuantity']>2){ echo $button_cart;} else echo "Out Of Stock"; ?></span>
+               <button data-loading-text="Loading..." class="btn btn-danger" type="button" onclick="<?PHP if( $product['PrdAvailQuantity']>1){?>cart.add('<?php echo $product['product_id']; ?>')<?PHP } ?>;">
+                 <span><?php if( $product['PrdAvailQuantity']>1){ echo $button_cart;} else echo "Out Of Stock"; ?></span>
               </button>
             </div>
         <?php } ?>
@@ -32,7 +32,9 @@
              <div class="quickview hidden-sm hidden-xs">
              <!-- <a class="iframe-link btn quick-view btn btn-sm btn-outline-light" data-toggle="tooltip" data-placement="top" href="<?php echo $ourl->link('themecontrol/product','product_id='.$product['product_id']);?>"  title="<?php echo $objlang->get('quick_view'); ?>" ><i class="zmdi zmdi-eye zmdi-hc-fw"></i></a>-->
              
+              <span data-toggle="tooltip" data-placement="top" title="<?php echo $objlang->get('quick_view'); ?>">
              <a class="btn btn-info btn-sm eye-zoom prd-quick-view" viewprdct="<?PHP echo $product['product_id']?>" data-toggle="modal" data-target="#Prdquickview"  title="<?php echo $objlang->get('quick_view'); ?>" ><i class="zmdi zmdi-eye zmdi-hc-fw"></i></a>
+             </span>
              
             </div>
             <?php } ?> 

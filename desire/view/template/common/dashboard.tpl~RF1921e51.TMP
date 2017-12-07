@@ -1,0 +1,153 @@
+<?php echo $header; ?><?php echo $column_left; ?>
+
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <h1><?php echo $heading_title; ?></h1>
+      <!--<ul class="breadcrumb">
+        <?php foreach ($breadcrumbs as $breadcrumb) { ?>
+        <li><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
+        <?php } ?>
+      </ul>-->
+      
+      <div class="col-md-4 pull-right dahsboard-cal">
+        
+<div id="reportrange" class="pull-right " >
+<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+<span id="sales-report-range" ></span> <b class="caret"></b>
+
+</div>
+
+<div class="go">
+<p>Go</p>
+
+</div>
+
+        </div>
+      
+    </div>
+  </div>
+  <div class="ord-info-main">
+    <div class="col-md-4">
+      <div class="order-info">
+      <!--  <h2>Orders Info</h2>-->
+        <div class="order-hea">
+          <h3>Sales Stats</h3>
+        </div>
+        <div class="ord-bot">
+          <div class="main-sales">
+            <div class="col-md-6">
+              <p>Sales Amount</p>
+            </div>
+            <div class="col-md-6">
+              <h4>$450,520</h4>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          <div class="main-sales">
+            <div class="col-md-6">
+              <p>Sales Amount</p>
+            </div>
+            <div class="col-md-6">
+              <h4 class="sa-bot">$450,520</h4>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-4">
+      <div class="order-info">
+       <!-- <h2>Orders Info</h2>-->
+        <div class="order-hea blue">
+          <h3>Total Users</h3>
+        </div>
+        <div class="ord-bot">
+          <div class="main-sales">
+            <div class="col-md-6">
+              <p>Total Customers</p>
+            </div>
+            <div class="col-md-6">
+              <h4 class="to-cus">$450,520</h4>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          <div class="main-sales">
+            <div class="col-md-6">
+              <p>Online Users</p>
+            </div>
+            <div class="col-md-6">
+              <h4 class="to-bot">$450,520</h4>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="order-info">
+        <!--<h2>Orders Info</h2>-->
+        <div class="order-hea cyan">
+          <h3>Order Status</h3>
+        </div>
+        <div class="ord-bot">
+          <div class="main-sales">
+            <div class="col-md-6">
+              <p>Sales Amount</p>
+            </div>
+            <div class="col-md-6">
+              <h4 class="or-st">$450,520</h4>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          <div class="main-sales">
+            <div class="col-md-6">
+              <p>Sales Amount</p>
+            </div>
+            <div class="col-md-6">
+              <h4 class="or-sat">$450,520</h4>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="clearfix"></div>
+  </div>
+  
+  
+  
+  
+  <div class="col-md-12 mb">
+  <div class="sales-ana">
+  <h2>Sales & Order Analysis</h2>
+  
+  <div class="salesanalysis" id="sales-order-analysis">
+  
+  </div>
+  
+  
+  </div>
+  
+  
+  </div>
+  
+  
+  
+  
+  <div class="col-md-6">
+  
+  
+  
+  </div>
+  
+  
+  
+<?php echo $footer; ?>

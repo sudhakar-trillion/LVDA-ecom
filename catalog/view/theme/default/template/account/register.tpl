@@ -18,7 +18,19 @@
     <?php } ?>
     <div id="content" class="mt"><?php echo $content_top; ?>
       <h1><?php echo $heading_title; ?></h1>
-      <p style="margin-bottom:30px; text-align:center;"><?php echo $text_account_already; ?></p>
+       <p style="margin-bottom:30px; text-align:center;">
+      <?PHP
+      		echo $registrationsuccess;
+      ?>
+      </p>
+      <?PHP
+      if( $registrationsuccess=='')
+      {
+      ?>
+      	<p style="margin-bottom:30px; text-align:center;"><?php echo $text_account_already; ?></p>
+        <?PHP
+        }
+        ?>
       <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" class="form-horizontal">
       
       <div class="col-md-6 pl">
@@ -86,10 +98,8 @@
           <div class="form-group ">
             <label class="col-sm-2 control-label" for="input-telephone"><?php echo $entry_alternate; ?></label>
             <div class="col-sm-10">
-              <input type="tel" name="telephone" value="<?php echo $alternatetelephone; ?>" placeholder="<?php echo $entry_alternate; ?>" id="input-telephone" class="form-control" />
-              <?php if ($error_telephone) { ?>
-              <div class="text-danger"><?php echo $error_telephone; ?></div>
-              <?php } ?>
+              <input type="tel" name="alternatetelephone" value="<?php echo $alternatetelephone; ?>" placeholder="<?php echo $entry_alternate; ?>" id="input-telephone" class="form-control" />
+
             </div>
           </div>
           

@@ -121,10 +121,18 @@
 $(window).load(function()
 {
 	var iframeid = $('iframe').attr('id');
-	console.log($("#"+iframeid).get(0).contentDocument.find("branding") );
 	
-
 });
+
+
+$(document).on('keypress',"#forget-password-email",function()
+		{
+				if ( event.which == 13 ) 
+				{
+					$(".forget-pwd-btn").trigger('click');
+				}
+				
+			});
 	$(document).ready(function()
 	{
 		
@@ -135,6 +143,9 @@ $(window).load(function()
 		{
 			$(".email_err").html('');
 		});
+		
+		
+		//	$( "#target" ).keypress(function( event ) 
 		
 		
 		$(document).on('click',".forget-pwd-btn",function()
@@ -160,23 +171,29 @@ $(window).load(function()
 									url:'index.php?route=requestdispatcher/requestdispatcher/resetcustomerpwd',
 									type:'POST',
 									data:{'forgetpasswordemail':forgetpasswordemail},
-									beforeSend:function(){ OnClick.val('Loading ........'); OnClick.attr('disabled',true); },
+									beforeSend:function(){ OnClick.val('Loading ........').css({'color':'#fff'}); OnClick.attr('disabled',true); },
 									success:function(resp)
 									{
 										OnClick.val('Password Sent'); 
 										OnClick.attr('disabled',false); 
 										
-										setTimeout(function(){ OnClick.val('Submit').css({'background-color':'#f00'}); $(".forgot-pwd-msg").html('');  }, 5000);
+										//setTimeout(function(){ OnClick.val('Submit').css({'background-color':'#f00'}); $(".forgot-pwd-msg").html('');  }, 5000);
 										
 										
 										resp = $.trim(resp);
 										if(resp=='0')
+										{
+											$(".email_err").html('');
 											$(".forgot-pwd-msg").html("<span class='alert alert-danger'>Mail Id does not registered with us</span>")
+										}
 										else if(resp=='-1')
+										{
+											$(".email_err").html('');
 											$(".forgot-pwd-msg").html("<span class='alert alert-warning'>Unable to reset your password, kindly raise a ticket</span>");
+										}
 										else if(resp=="1")
 										{
-											$(".forgot-pwd-msg").html("<span class='alert alert-success'>Password reset successfully kindly check your email</span>");
+											$(".forgot-pwd-msg").html("<span class='alert alert-success'>Password reset successfully kindly check your inbox </span>");
 											$("#forget-password-email").val('');
 											
 										}

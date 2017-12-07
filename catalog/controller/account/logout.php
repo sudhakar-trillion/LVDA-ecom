@@ -1,6 +1,10 @@
 <?php
 class ControllerAccountLogout extends Controller {
 	public function index() {
+		
+
+		$this->db->query("DELETE FROM `oc_customer_online` WHERE customer_id=".$this->session->data['customer_id']);
+		
 		if ($this->customer->isLogged()) {
 			$this->customer->logout();
 

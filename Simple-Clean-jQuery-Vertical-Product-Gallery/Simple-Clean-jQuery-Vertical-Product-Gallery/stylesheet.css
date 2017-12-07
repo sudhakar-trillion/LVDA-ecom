@@ -1,0 +1,77 @@
+.container {
+width: 960px;
+margin: 30px auto;
+padding: 0 20px;
+padding-bottom: 40px;
+font-family: 'Calibri', 'CalibriRegular', Verdana, Arial, Helvetica, sans-serif;
+}
+.gallery {
+}
+.gallery .previews, .gallery .full, .gallery .desc {
+    float: left;
+    height: 505px;
+	position:relative;
+    margin-right: 10px;
+    overflow: hidden;
+}
+.mainprd{
+	position:relative;
+	margin-top:20px;
+}
+.prd-thumbs {
+	transition:all 1s ease-in-out ;
+	-webkit-transition:all 0.6s ease-in-out ;
+}
+.prd-thumbs a {
+	transition:all 1s ease-in-out ;
+	-webkit-transition:all 0.6s ease-in-out ;
+}
+.prebtn{
+	color:#fff;
+	cursor:pointer;
+	position:absolute;
+	top:0px;
+	background:#000;
+	padding:5px;
+	
+}
+.nextbtn{
+	color: #fff;
+    cursor: pointer;
+    background: #000;
+    padding: 5px;
+    position: absolute;
+    left: 15px;
+    bottom: 0px;
+	
+}
+.gallery .desc, .gallery .full {
+width: 400px;
+font-size: 12px;
+}
+.gallery .desc h2 {
+margin-top: 0;
+}
+.gallery .previews a {
+display: block;
+margin-bottom: 10px;
+}
+.gallery .full, .gallery .full img {
+height: 600px;
+}
+.gallery .previews a, .gallery .full {
+border: 4px solid #eee;
+}
+.gallery .previews a:hover, .gallery .previews a.selected {
+border: 4px solid #777;
+}
+.gallery .full img:hover {
+cursor: pointer;
+}
+.clearfix:after {
+content: ".";
+visibility: hidden;
+display: block;
+height: 0;
+clear: both;
+}

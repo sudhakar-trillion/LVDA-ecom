@@ -201,7 +201,7 @@
             </div>
           </div>
           
-          <div class="dummy1" style="width:33%; display:inline-block">&nbsp; </div>
+     <!--     <div class="dummy1" style="width:33%; display:inline-block">&nbsp; </div>-->
                 
               <div class="sticky-cart">   
                  <?php echo $cart; ?>

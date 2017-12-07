@@ -9,7 +9,7 @@ if( $_SESSION['default']['top_footer'] =="Yes" )
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
           <?php if( $content=$helper->getLangConfig('widget_address') ) {?>
               <?php  
-              	echo $content; 
+              	//echo $content; 
                 
                 ?>
           <?php } ?>

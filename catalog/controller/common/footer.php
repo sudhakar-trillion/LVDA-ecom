@@ -104,6 +104,12 @@ class ControllerCommonFooter extends Controller {
 		{	
 			$this->session->data['top_footer']="Yes";
 		}
+		
+		//check whether any products in the cart
+		$this->load->language('common/cart');
+		
+		
+		$data['cartsize'] = sizeof($this->cart->getProducts());
 			
 		return $this->load->view('common/footer', $data);
 	}

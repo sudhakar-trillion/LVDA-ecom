@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>jQuery Gallery Plugin Basic Demo</title>
+<link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="stylesheet.css">
+<link rel="stylesheet" href="fancybox/jquery.fancybox.css">
+
+<style>
+</style>
+</head>
+<body>
+
+<div class="gallery">
+
+<div class="prebtn" id="prv">Pre</div>
+<div class="nextbtn" id="nxt">Next</div>
+
+<div class="previews"> 
+
+<div class="prd-thumbs">
+
+<a href="#"  data-full="images/top1large.jpg"><img src="images/top1small.jpg" /></a> 
+<a href="#" class="" data-full="images/top2large.jpg"><img src="images/top2small.jpg" /></a> 
+<a href="#" class="" data-full="images/top3large.jpg"><img src="images/top3small.jpg" /></a> 
+<a href="#" class="" data-full="images/top4large.jpg"><img src="images/top4small.jpg" /></a> 
+<a href="#" data-full="images/top5large.jpg"><img src="images/top5small.jpg" /></a> 
+
+
+<a href="#"  data-full="images/top1large.jpg"><img src="images/top1small.jpg" /></a> 
+
+
+<a href="#" data-full="images/top2large.jpg"><img src="images/top2small.jpg" /></a> 
+<a href="#" data-full="images/top3large.jpg"><img src="images/top3small.jpg" /></a> 
+
+<a href="#" data-full="images/top4large.jpg"><img src="images/top4small.jpg" /></a> 
+<a href="#" data-full="images/top5large.jpg"><img src="images/top5small.jpg" /></a> </div>
+
+</div>
+</div>
+
+
+
+<div class="full"> 
+<!-- first image is viewable to start --> 
+<img src="images/top1large.jpg" /> </div>
+</div>
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script> 
+<script src="fancybox/jquery.fancybox.js?v=2.1.4"></script> 
+<script>
+  $(document).ready(function(){
+    $('a').click(function(){
+      var largeImage = $(this).attr('data-full');
+      $('.selected').removeClass();
+      $(this).addClass('selected');
+      $('.full img').hide();
+      $('.full img').attr('src', largeImage);
+      $('.full img').fadeIn();
+
+
+    }); // closing the listening on a click
+    $('.full img').on('click', function(){
+      var modalImage = $(this).attr('src');
+      $.fancybox.open(modalImage);
+    });
+  }); //closing our doc ready
+  </script>
+<script type="text/javascript">
+var incr=0;
+var decr=$('.prd-thumbs a').length;
+var clicks=0;
+var trans =0;
+var len = 0;
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-36251023-1']);
+  _gaq.push(['_setDomainName', 'jqueryscript.net']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+
+$(document).ready(function()
+{
+	$(".nextbtn").on('click',function()
+	{
+		$("#prv").show();
+		incr = parseInt(incr);
+		var done='0';
+		incr= (incr)+(1);
+		
+		var len = ($('.prd-thumbs a').length)*($('.prd-thumbs a img').height());
+				
+				var divident = parseInt($('.prd-thumbs a').length)+incr-(1);
+					len = (len)/(divident);
+					len = "-"+len;
+					
+				if( len == chkfinaltrans )
+					$("#nxt").hide();
+		
+		
+		if( incr==1 )
+		{
+			$('.prd-thumbs a').each(function(ind,val)
+			{
+				$('.prd-thumbs a').eq((ind)-(1)).css({'transform':'translateY(-'+$('.prd-thumbs a img').height()+'%)'});
+			});
+			
+			if( len == "-110" && parseInt($('.prd-thumbs a').length)==5)
+			$("#nxt").hide();
+		}
+		else
+		{
+				var trns = $('.prd-thumbs a').attr('style');
+				trns = trns.split("(");
+				trns = trns[1].split('%');
+				var finaltrans = parseInt(trns[0]);
+				
+				finaltrans = (finaltrans)-($('.prd-thumbs a img').height()+(10.75));
+				var chkfinaltrans = finaltrans;
+				
+				
+				if(chkfinaltrans<0)
+					$('.prd-thumbs a').css({'transform':'translateY('+finaltrans+'%)'});
+				
+				var len = ($('.prd-thumbs a').length)*($('.prd-thumbs a img').height());
+				
+				var divident = parseInt($('.prd-thumbs a').length);
+					len = ((len)/(divident))*incr;
+					len = (len)+(10.75);
+					len = "-"+len;
+					
+				if( len == finaltrans && incr==parseInt($('.prd-thumbs a').length)-3 )
+						$("#nxt").hide();
+					
+		}
+	
+	});
+
+	$(".prebtn").on('click',function()
+	{
+		incr=(incr)-(1);
+		
+		$("#nxt").show();
+		var trns = $('.prd-thumbs a').attr('style');
+				trns = trns.split("(");
+		
+				trns = trns[1].split('%');
+				
+				var finaltrans = parseInt(trns[0]);
+				console.log(finaltrans);
+				
+				finaltrans = (finaltrans)+($('.prd-thumbs a img').height());
+				console.log(finaltrans);
+				var chkfinaltrans = finaltrans;
+				
+				if(chkfinaltrans<0)
+				{
+					$('.prd-thumbs a').css({'transform':'translateY('+finaltrans+'%)'});
+				}
+				else
+				{
+					$('.prd-thumbs a').css({'transform':'translateY(0%)'});
+					$("#prv").hide();
+				}
+		
+			
+	});
+	
+
+});
+</script>
+
+</body>
+</html>

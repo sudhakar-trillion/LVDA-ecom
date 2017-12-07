@@ -21,6 +21,11 @@ class ControllerCatalogProduct extends Controller {
 
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
 			$this->model_catalog_product->addProduct($this->request->post);
+			
+
+			
+			
+			
 
 			$this->session->data['success'] = $this->language->get('text_success');
 
@@ -72,7 +77,65 @@ class ControllerCatalogProduct extends Controller {
 		$this->load->model('catalog/product');
 
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
-			$this->model_catalog_product->editProduct($this->request->get['product_id'], $this->request->post);
+			
+			$Productquantity = $this->model_catalog_product->getProductquantity($_GET['product_id']);
+			
+			if( ( $Productquantity == 0 || $Productquantity==1 ) && $_POST['quantity']>1 )
+			{
+				//check whether any user has asked to notify when the product availables
+				
+				$users = $this->model_catalog_product->getrestocknotifyemails($_GET['product_id']);
+				
+				
+				
+				
+				if($users!='0')
+				{
+					$mail = new Mail();
+						$prdinfo = $this->model_catalog_product->getProduct($_GET['product_id']);
+						
+					// send a notification 	regarding the arrival of the product to the users
+					
+					foreach($users as $email )
+					{
+						$subject = "Re-arrival of the product";
+						
+						$message = '<table><tr><td style="width:150px">';
+						$message.='<img src="http://www.trillionit.in/lvda-ver-III/image/'.$prdinfo['image'].'" style="width:150px"></td>';
+						$message.='<td><h3><a href="http://www.trillionit.in/lvda-ver-III/'.str_replace(" ","-",strtolower(trim($prdinfo['name']))).'">'.$prdinfo['name'].'</a></h3><p>'.$prdinfo['description'].'</p><p><span><strong>Price: </strong></span>'.$prdinfo['price'].'</p>';
+						$message.='</td></tr>';
+						$userdetails['email'] = 'sudhakar@trillionit.com';
+						
+						$mail->protocol = $this->config->get('config_mail_protocol');
+						$mail->parameter = $this->config->get('config_mail_parameter');
+						$mail->smtp_hostname = $this->config->get('config_mail_smtp_hostname');
+						$mail->smtp_username = $this->config->get('config_mail_smtp_username');
+						$mail->smtp_password = html_entity_decode($this->config->get('config_mail_smtp_password'), ENT_QUOTES, 'UTF-8');
+						$mail->smtp_port = $this->config->get('config_mail_smtp_port');
+						$mail->smtp_timeout = $this->config->get('config_mail_smtp_timeout');
+						$mail->smtp_Auth = TRUE;
+						
+						$mail->setTo($email);
+						//$mail->setTo('phpadmin@trillionit.com');
+						
+						$mail->setFrom($this->config->get('config_email'));
+						$mail->setSender(html_entity_decode($this->config->get('config_name'), ENT_QUOTES, 'UTF-8'));
+						$mail->setSubject($subject);
+						$mail->setHtml( html_entity_decode($message, ENT_QUOTES, 'UTF-8') );
+						
+						$mail->send();
+						
+						$this->model_catalog_product->updatearrivalNotify($email,$_GET['product_id']);
+							
+					}
+					
+				}
+				
+			}
+			
+
+			$resp = $this->model_catalog_product->editProduct($this->request->get['product_id'], $this->request->post);
+			
 
 			$this->session->data['success'] = $this->language->get('text_success');
 
